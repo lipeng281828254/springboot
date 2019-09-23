@@ -1,9 +1,9 @@
 package com.dapeng.springboot.controller;
 
-import jdk.nashorn.internal.runtime.logging.Logger;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * ==================================================
@@ -16,12 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
  * 〈功能〉：helloword的访问控制器
  * ==================================================
  */
-@RestController
+@Controller
+@RequestMapping("/test/")
 public class HelloWordController {
 
-    @RequestMapping(value = "index",method = RequestMethod.GET)
+    @RequestMapping(value = "index")
     public String index(){
         System.out.println("->>进入控制器");
-        return "HelloWord";
+        return "index";
     }
 }
