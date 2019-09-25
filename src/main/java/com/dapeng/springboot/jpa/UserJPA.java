@@ -8,8 +8,9 @@ package com.dapeng.springboot.jpa;
  * @author : lipeng
  * @create 2019/9/24
  * @since 1.0.0
- * 〈功能〉：TODO
+ * 〈功能〉：用户jpa
  * ==================================================
  */
-public interface UserJPA {
+public interface UserJPA extends BaseJPA {
+
 }
