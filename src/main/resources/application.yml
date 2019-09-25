@@ -1,0 +1,26 @@
+#spring.mvc.view.prefix=/jsp/
+#spring.mvc.view.suffix=.jsp
+
+##使用yml文件，value冒号后一定要带空格；2，时区要设置在url后
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/dapeng_test?serverTimezone=UTC
+    driverClassName: com.mysql.jdbc.Driver
+    username: test
+    password: 123456
+  jpa:
+    database: MYSQL
+    show-sql: true
+    hibernate:
+    naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
+#spring.datasource.url=jdbc:mysql://localhost:3306/dapeng_test?serverTimezone=UTC
+#spring.datasource.driver-class-name=com.mysql.jdbc.Driver
+#spring.datasource.username=test
+#spring.datasource.password=123456
+#
+#spring.jpa.database=MYSQL
+#spring.jpa.show-sql=true
+#spring.jpa.hibernate.naming-strategy=org.hibernate.cfg.ImprovedNamingStrategy
+
+
+#spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL5Dialect
