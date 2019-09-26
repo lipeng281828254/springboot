@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * ==================================================
@@ -33,7 +34,17 @@ public class UserCotroller {
 
     @RequestMapping("/getUser.json")
     public UserEntity getUser(Long id){
-       return userJPA.getOne(id);
+        Optional optional = userJPA.findById(id);
+        return (UserEntity) optional.get();
     }
 
+    @RequestMapping("/addUser.json")
+    public UserEntity addUser(UserEntity userEntity){
+        return userJPA.save(userEntity);
+    }
+
+    @RequestMapping("/delete.json")
+    public void deleteUser(Long id){
+        userJPA.delete(getUser(id));
+    }
 }

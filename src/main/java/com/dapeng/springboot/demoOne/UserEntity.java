@@ -20,7 +20,7 @@ import java.io.Serializable;
 public class UserEntity implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)//自增设置
     @Column(name = "id")
     private Long id;
 
