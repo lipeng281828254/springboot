@@ -34,8 +34,13 @@ public class UserCotroller {
 
     @RequestMapping("/getUser.json")
     public UserEntity getUser(Long id){
-        Optional optional = userJPA.findById(id);
-        return (UserEntity) optional.get();
+        try {
+            Optional optional = userJPA.findById(id);
+            return (UserEntity) optional.get();
+        } catch (RuntimeException e){
+            System.out.println("没有查询到信息");
+        }
+        return null;
     }
 
     @RequestMapping("/addUser.json")

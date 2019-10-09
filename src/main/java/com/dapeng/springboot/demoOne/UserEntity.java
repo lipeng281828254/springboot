@@ -1,7 +1,10 @@
 package com.dapeng.springboot.demoOne;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * ==================================================
@@ -63,6 +66,11 @@ public class UserEntity implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public static void main(String[] args) {
+        UserEntity entity = new UserEntity();
+        new TypeReference<Map<String,String>>(){};
     }
 
 }
