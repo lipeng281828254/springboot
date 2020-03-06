@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 import javax.sql.DataSource;
+import java.sql.SQLException;
 
 /**
  * ==================================================
@@ -135,11 +136,11 @@ public class DruidConfiguration {
         datasource.setTestWhileIdle(testWhileIdle);
         datasource.setTestOnBorrow(testOnBorrow);
         datasource.setTestOnReturn(testOnReturn);
-//        try {
-//            datasource.setFilters(filters);
-//        } catch (SQLException e) {
-//            System.out.println("数据源失败构建");
-//        }
+        try {
+            datasource.setFilters(filters);
+        } catch (SQLException e) {
+            System.out.println("数据源失败构建");
+        }
         return datasource;
     }
 }
