@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/test/")
 public class HelloWordController {
 
-    @RequestMapping(value = "index")
-    public String index(){
+    @RequestMapping(value = "/index")
+    public String toIndex(){
         System.out.println("->>进入控制器");
         return "index";
     }

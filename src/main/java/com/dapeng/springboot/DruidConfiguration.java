@@ -8,9 +8,9 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 import javax.sql.DataSource;
-import java.sql.SQLException;
 
 /**
  * ==================================================
@@ -24,6 +24,7 @@ import java.sql.SQLException;
  * ==================================================
  */
 @Configuration
+@PropertySource("classpath:application.propertites")
 public class DruidConfiguration {
 
     @Value("${spring.datasource.filters}")
@@ -134,11 +135,11 @@ public class DruidConfiguration {
         datasource.setTestWhileIdle(testWhileIdle);
         datasource.setTestOnBorrow(testOnBorrow);
         datasource.setTestOnReturn(testOnReturn);
-        try {
-            datasource.setFilters(filters);
-        } catch (SQLException e) {
-            System.out.println("数据源失败构建");
-        }
+//        try {
+//            datasource.setFilters(filters);
+//        } catch (SQLException e) {
+//            System.out.println("数据源失败构建");
+//        }
         return datasource;
     }
 }
