@@ -1,4 +1,4 @@
-package com.dapeng.springboot.service;
+package com.dapeng.springboot.util;
 
 import com.sun.mail.util.MailSSLSocketFactory;
 
@@ -26,7 +26,7 @@ public class SendmailUtil {
     // QQ邮箱的 SMTP 服务器地址为: smtp.qq.com
     private static String myEmailSMTPHost = "smtp.qq.com";
     //发件人邮箱
-    private static String myEmailAccount = "281828254@qq.com";//972520145@qq.com
+    private static String myEmailAccount = "zzzzz@qq.com";
 
     //发件人邮箱密码（授权码）
     //在开启SMTP服务时会获取到一个授权码，把授权码填在这里
@@ -127,7 +127,7 @@ public class SendmailUtil {
 
     public static void main(String[] args) {
         try {
-            sendEmail("412175034@qq.com","TEST","http://www.baidu.com");
+            sendEmail("sssss@qq.com","TEST","http://www.baidu.com");
         } catch (Exception e) {
             e.printStackTrace();
         }

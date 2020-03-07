@@ -1,6 +1,6 @@
 package com.dapeng.springboot.jpa;
 
-import com.dapeng.springboot.demoOne.UserEntity;
+import com.dapeng.springboot.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 

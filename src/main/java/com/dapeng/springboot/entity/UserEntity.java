@@ -1,4 +1,4 @@
-package com.dapeng.springboot.demoOne;
+package com.dapeng.springboot.entity;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
