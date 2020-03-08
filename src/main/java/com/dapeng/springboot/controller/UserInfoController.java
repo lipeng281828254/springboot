@@ -3,7 +3,7 @@ package com.dapeng.springboot.controller;
 import com.dapeng.springboot.dto.UserInfoDto;
 import com.dapeng.springboot.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,7 +27,7 @@ public class UserInfoController {
      * @param dto
      * @return
      */
-    @GetMapping("/addUserInfo.json")
+    @PostMapping("/addUserInfo.json")
     public UserInfoDto addUserInfo(@Valid UserInfoDto dto){
         return userInfoService.addUserInfo(dto);
     }

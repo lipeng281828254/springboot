@@ -11,8 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ParamCheckUtil {
 
-    //邮箱必须是数字加英文，可以包含特殊字符^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z~@*/#()_]{8,16}$"
-    private final static String reqFormat = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$";
+    //邮箱必须是数字加英文，可以包含特殊字符"
+    private final static String reqFormat = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z~@*/#()_]{8,16}$";
     /**
      * 密码组合验证
      * @param password
