@@ -1,5 +1,7 @@
 package com.dapeng.springboot.dto;
 
+import lombok.Data;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -10,6 +12,7 @@ import java.io.Serializable;
  * @date 2020/3/8 0:04
  * @message：
  */
+@Data
 public class UserInfoDto implements Serializable {
 
 
@@ -39,74 +42,6 @@ public class UserInfoDto implements Serializable {
     private String headImgId;
 
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getLoginName() {
-        return loginName;
-    }
-
-    public void setLoginName(String loginName) {
-        this.loginName = loginName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getConfirmPassword() {
-        return confirmPassword;
-    }
-
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
-    }
-
-    public String getUserType() {
-        return userType;
-    }
-
-    public void setUserType(String userType) {
-        this.userType = userType;
-    }
-
-    public String getHeadImgId() {
-        return headImgId;
-    }
-
-    public void setHeadImgId(String headImgId) {
-        this.headImgId = headImgId;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public String toString() {
-        return "UserInfoDto{" +
-                "id=" + id +
-                ", userName='" + userName + '\'' +
-                ", loginName='" + loginName + '\'' +
-                ", password='" + password + '\'' +
-                ", confirmPassword='" + confirmPassword + '\'' +
-                ", userType='" + userType + '\'' +
-                ", headImgId='" + headImgId + '\'' +
-                '}';
-    }
 
 
 }

@@ -1,5 +1,7 @@
 package com.dapeng.springboot.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -10,6 +12,7 @@ import java.util.Date;
  * @date 2020/3/7 23:32
  * @message：用户信息entity
  */
+@Data
 @Entity
 @Table(name = "user_info")
 public class UserInfoEntity implements Serializable {
@@ -51,107 +54,4 @@ public class UserInfoEntity implements Serializable {
     private String position;
 
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getLoginName() {
-        return loginName;
-    }
-
-    public void setLoginName(String loginName) {
-        this.loginName = loginName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getHeadImgId() {
-        return headImgId;
-    }
-
-    public void setHeadImgId(String headImgId) {
-        this.headImgId = headImgId;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public String getUserType() {
-        return userType;
-    }
-
-    public void setUserType(String userType) {
-        this.userType = userType;
-    }
-
-    public Long getTermId() {
-        return termId;
-    }
-
-    public void setTermId(Long termId) {
-        this.termId = termId;
-    }
-
-    public String getPosition() {
-        return position;
-    }
-
-    public void setPosition(String position) {
-        this.position = position;
-    }
-
-    @Override
-    public String toString() {
-        return "UserInfoEntity{" +
-                "id=" + id +
-                ", userName='" + userName + '\'' +
-                ", loginName='" + loginName + '\'' +
-                ", email='" + email + '\'' +
-                ", headImgId='" + headImgId + '\'' +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                ", userType='" + userType + '\'' +
-                ", termId=" + termId +
-                ", position='" + position + '\'' +
-                '}';
-    }
 }

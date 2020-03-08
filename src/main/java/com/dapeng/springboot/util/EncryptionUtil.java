@@ -20,10 +20,16 @@ public class EncryptionUtil {
      * @param password
      * @return
      */
-    public static String getEncryp(String password) throws NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance("MD5");//算法对象md5
-        md.update(password.getBytes());//字节数组对象更新处理
-        String newPassword = new BigInteger(1,md.digest()).toString(16);//正数，哈希算法，生成32字符串
+    public static String getEncryp(String password){
+        String newPassword = "";
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");//算法对象md5
+            md.update(password.getBytes());//字节数组对象更新处理
+            newPassword = new BigInteger(1,md.digest()).toString(16);//正数，哈希算法，生成32字符串
+        } catch (Exception e){
+            log.error("加密失败",e);
+            throw new RuntimeException("加密失败，请联系管理员");
+        }
 //        log.info("加密后密码，{}",newPassword);
         return newPassword;
     }

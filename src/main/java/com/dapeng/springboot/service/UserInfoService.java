@@ -1,6 +1,6 @@
 package com.dapeng.springboot.service;
 
-import com.dapeng.springboot.dto.UserInfoDto;
+import com.dapeng.springboot.dto.*;
 import com.dapeng.springboot.entity.UserInfoEntity;
 import com.dapeng.springboot.jpa.UserInfoDao;
 import com.dapeng.springboot.util.EncryptionUtil;
@@ -57,5 +57,60 @@ public class UserInfoService {
         }
         log.info("添加用户结果：{}", resp);
         return resp;
+    }
+
+    /**
+     * 根据用户id更新信息
+     * @param dto
+     */
+    public void updateUserInfo(UpdateUserInfoDto dto){
+        log.info("更新用户信息入参：{}",dto);
+        UserInfoEntity entity = userInfoDao.getOne(dto.getId());
+        if (entity == null){
+            throw new RuntimeException("没有查询到用户信息");
+        }
+        log.info("用户信息：{}",entity);
+        BeanUtils.copyProperties(dto,entity);
+        UserInfoEntity result = userInfoDao.save(entity);
+        log.info("更新用户信息结束,{}",result);
+    }
+
+    //校验密码是否当前用户密码
+    public UserInfoEntity checkPassword(ChekcPasswordDto dto){
+        UserInfoEntity entity = userInfoDao.getOne(dto.getId());
+        if (entity==null){
+            throw new RuntimeException("未查询到用户信息");
+        }
+        String password = EncryptionUtil.getEncryp(dto.getPassword());
+        log.info("传入密码，{}---已有密码：{}",password,entity.getPassword());
+        if (!password.equals(entity.getPassword())){
+            throw new RuntimeException("密码错误");
+        }
+        return entity;
+    }
+
+    /**
+     * 更新邮箱
+     */
+    public void updateLoginName(UpLoginDto upLoginDto){
+        UserInfoEntity entity = userInfoDao.getOne(upLoginDto.getId());
+        if (entity==null){
+            throw new RuntimeException("未查询到用户信息");
+        }
+        BeanUtils.copyProperties(upLoginDto,entity);
+        userInfoDao.save(entity);
+    }
+
+    public void updatePassword(UpdatePassword dto){
+        if (!ParamCheckUtil.passwordCheck(dto.getPassword())){
+            throw new RuntimeException("密码必须包含数字和英文，可以包含特殊字符");
+        }
+        if (!dto.getPassword().equals(dto.getConfirmPassword())) {
+            throw new RuntimeException("密码和确认密码不一致");
+        }
+        UserInfoEntity entity = userInfoDao.getOne(dto.getId());
+        BeanUtils.copyProperties(dto,entity);
+        entity.setPassword(EncryptionUtil.getEncryp(dto.getPassword()));//加密
+        userInfoDao.save(entity);
     }
 }
