@@ -3,10 +3,10 @@ package com.dapeng.springboot.controller;
 import com.dapeng.springboot.dto.*;
 import com.dapeng.springboot.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 /**
@@ -28,27 +28,33 @@ public class UserInfoController {
      * @return
      */
     @PostMapping("/addUserInfo.json")
-    public UserInfoDto addUserInfo(@Valid UserInfoDto dto){
+    public UserInfoDto addUserInfo(@Valid @RequestBody UserInfoDto dto){
         return userInfoService.addUserInfo(dto);
     }
 
     @PostMapping("/updateUserInfo.json")
-    public void updateUserInfo(@Valid UpdateUserInfoDto dto){
+    public void updateUserInfo(@Valid @RequestBody UpdateUserInfoDto dto){
         userInfoService.updateUserInfo(dto);
     }
 
     @PostMapping("/updateLoginName.json")
-    public void updateLoginName(@Valid UpLoginDto dto){
+    public void updateLoginName(@Valid @RequestBody UpLoginDto dto){
         userInfoService.updateLoginName(dto);
     }
 
     @PostMapping("/checkPassword.json")
-    public void checkPassword(@Valid ChekcPasswordDto dto){
+    public void checkPassword(@Valid @RequestBody ChekcPasswordDto dto){
         userInfoService.checkPassword(dto);
     }
 
     @PostMapping("/updatePassword.json")
-    public void updatePassword(UpdatePassword dto){
+    public void updatePassword(@Valid @RequestBody UpdatePassword dto){
         userInfoService.updatePassword(dto);
+    }
+
+    @PostMapping("/login.json")
+    public UserInfoDto login( @Valid @RequestBody LoginDto loginDto, HttpServletRequest request){
+        HttpSession session = request.getSession();
+        return userInfoService.login(loginDto,session);
     }
 }

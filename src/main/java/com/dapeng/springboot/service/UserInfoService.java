@@ -10,6 +10,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 
 /**
  * @author lipeng
@@ -35,7 +36,7 @@ public class UserInfoService {
         UserInfoDto resp = new UserInfoDto();
         try {
             if (!ParamCheckUtil.passwordCheck(dto.getPassword())){
-                throw new RuntimeException("密码必须包含数字和英文，可以包含特殊字符");
+                throw new RuntimeException("密码必须包含数字和英文且在8-16位，可以包含特殊字符");
             }
             if (!dto.getPassword().equals(dto.getConfirmPassword())) {
                 throw new RuntimeException("密码和确认密码不一致");
@@ -101,9 +102,13 @@ public class UserInfoService {
         userInfoDao.save(entity);
     }
 
+    /**
+     * 修改密码
+     * @param dto
+     */
     public void updatePassword(UpdatePassword dto){
         if (!ParamCheckUtil.passwordCheck(dto.getPassword())){
-            throw new RuntimeException("密码必须包含数字和英文，可以包含特殊字符");
+            throw new RuntimeException("密码必须包含数字和英文且在8-16位，可以包含特殊字符");
         }
         if (!dto.getPassword().equals(dto.getConfirmPassword())) {
             throw new RuntimeException("密码和确认密码不一致");
@@ -113,4 +118,28 @@ public class UserInfoService {
         entity.setPassword(EncryptionUtil.getEncryp(dto.getPassword()));//加密
         userInfoDao.save(entity);
     }
+
+    /**
+     * 登录功能
+     * @param loginDto
+     * @return
+     */
+    public UserInfoDto login(LoginDto loginDto, HttpSession session){
+        UserInfoEntity entity = userInfoDao.getByLoginName(loginDto.getLoginName());
+        if (entity == null){
+            throw new RuntimeException("用户不存在");
+        }
+        String password = EncryptionUtil.getEncryp(loginDto.getPassword());
+        if (!password.equals(entity.getPassword())){
+            throw new RuntimeException("密码或用户名错误");
+        }
+        UserInfoDto userInfoDto = new UserInfoDto();
+        BeanUtils.copyProperties(entity,userInfoDto);
+        //放入session
+        session.setAttribute("userInfo",userInfoDto);
+        return userInfoDto;
+    }
+
+
+
 }
