@@ -19,16 +19,16 @@ public class UserInfoEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)//自增设置
-    @Column(name = "id")
+    @Column(name = "id",columnDefinition = "bigint(18) comment '主键'")
     private Long id;
 
-    @Column(name = "user_name")
+    @Column(name = "user_name",columnDefinition = "varchar(64) comment '姓名'")
     private String userName;
 
-    @Column(name = "login_name")
+    @Column(name = "login_name",columnDefinition = "varchar(64) comment '登录名'")
     private String loginName;
 
-    @Column(name = "password")
+    @Column(name = "password",columnDefinition = "varchar(256) comment '密码'")
     private String password;
 
     @Column(name = "email")
@@ -37,10 +37,20 @@ public class UserInfoEntity implements Serializable {
     @Column(name = "head_img_id")
     private String headImgId;
 
-    @Column(name = "create_time")
+    @Column(
+            name = "create_time",
+            insertable = false,
+            updatable = false,
+            columnDefinition = " timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'"
+    )
     private Date createTime;
 
-    @Column(name = "update_time")
+    @Column(
+            name = "update_time",
+            insertable = false,
+            updatable = false,
+            columnDefinition = "timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间'"
+    )
     private Date updateTime;
 
     //成员，团长
