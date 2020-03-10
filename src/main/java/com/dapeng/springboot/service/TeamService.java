@@ -1,14 +1,18 @@
 package com.dapeng.springboot.service;
 
-import com.dapeng.springboot.dto.InviteDto;
-import com.dapeng.springboot.dto.TeamDto;
+import com.dapeng.springboot.common.ConstantRecord;
+import com.dapeng.springboot.dto.*;
+import com.dapeng.springboot.entity.NoticeEntity;
 import com.dapeng.springboot.entity.TeamEntity;
 import com.dapeng.springboot.entity.UserInfoEntity;
 import com.dapeng.springboot.jpa.TeamDao;
 import com.dapeng.springboot.jpa.UserInfoDao;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 
@@ -26,6 +30,8 @@ public class TeamService {
     private TeamDao teamDao;
     @Resource
     private UserInfoDao userInfoDao;
+    @Autowired
+    private NoticeService noticeService;
 
     /**
      * 创建团队
@@ -40,23 +46,110 @@ public class TeamService {
         if (userInfo != null){
             entity.setCreateName(userInfo.getUserName());
         }
-        teamDao.save(entity);
+        TeamEntity resultEntity = teamDao.save(entity);
+        userInfoDao.addTeamId(resultEntity.getId(),teamDto.getUserId());
         return Boolean.TRUE;
     }
 
     /**
-     * 邀请入团
+     * 更新团队名称
+     * @param id
+     * @param teamName
      * @return
      */
-    public boolean invite(InviteDto inviteDto){
-        log.info("邀请对象，{}",inviteDto.getUserId());
+    public boolean updateTeam(Long id,String teamName){
+        getById(id);
+        int count = teamDao.updateTeamName(id,teamName);
+        return count == 1;
+    }
+
+    private TeamEntity getById(Long id){
+        TeamEntity entity = teamDao.getOne(id);
+        if (entity == null){
+            throw new RuntimeException("未查询到团队信息");
+        }
+        return entity;
+    }
+
+    /**
+     * 邀请成员，生成消息
+     * @param inviteDto
+     * @return
+     */
+    public Boolean inviteUser(InviteDto inviteDto) {
         UserInfoEntity userInfo = getUserInfoById(inviteDto.getUserId());
+        if (userInfo.getTeamId() != null){
+            throw new RuntimeException("用户已加入团队");
+        }
+        //生成通知信息
+        //消息创建者就是团长
+        UserInfoEntity owerInfo = getUserInfoById(inviteDto.getCreateBy());
+        TeamEntity teamEntity = getById(owerInfo.getTeamId());
+        NoticeDto noticeDto = buildNoticeInfo(inviteDto.getUserId(),userInfo.getUserName(),teamEntity.getId(),teamEntity.getTeamName(),inviteDto.getCreateBy(),"invite");
+        noticeService.createNotice(noticeDto);
+        return Boolean.TRUE;
+    }
+
+    //构建通知消息
+    private NoticeDto buildNoticeInfo(Long handlerId,String handlerName,Long teamId,String teamName,Long createBy,String flag) {
+        NoticeDto noticeDto = new NoticeDto();
+        noticeDto.setHandlerId(handlerId);//处理人
+        noticeDto.setHandlerName(handlerName);
+        UserInfoEntity createUser = getUserInfoById(createBy);
+        log.info("结果：{}",createUser);
+        noticeDto.setCreateBy(createBy);
+        noticeDto.setCreateName(createUser.getUserName());
+        noticeDto.setTeamId(teamId);
+        noticeDto.setTeamName(teamName);
+        StringBuffer sb = new StringBuffer();
+        if ("invite".equals(flag)){
+            noticeDto.setAction(ConstantRecord.inviteAction);//邀请通知
+            sb.append("用户");
+            if (!StringUtils.isEmpty(createUser.getUserName())){
+                sb.append(createUser.getUserName());
+            }
+            sb.append("邀请您加入");
+            sb.append(teamName).append("团队");
+        } else {
+            noticeDto.setAction(ConstantRecord.replyAction);//加入通知
+            sb.append("用户");
+            if (!StringUtils.isEmpty(createUser.getUserName())){
+                sb.append(createUser.getUserName());
+            }
+            sb.append("已加入");
+            sb.append(teamName).append("团队");
+        }
+        noticeDto.setContent(sb.toString());
+        noticeDto.setStatus("未读");
+        return noticeDto;
+    }
+
+
+    /**
+     * 回复入团
+     * @return
+     */
+    public boolean replyUser(ReplyDto replyDto){
+        log.info("回复邀请通知入参，{}",replyDto);
+        if (!"OK".equals(replyDto.getIsOk())){
+            return false;
+        }
+        UserInfoEntity userInfo = getUserInfoById(replyDto.getUserId());
         if (userInfo.getTeamId() != null){
             throw new RuntimeException("成员已在其他团队里");
         }
-        userInfoDao.addTeamId(inviteDto.getTeamId(),inviteDto.getUserId());
-        log.info("邀请成功");
+        //查询通知详情
+        NoticeDto noticeDto = getByNoticeId(replyDto.getNoticeId());
+        userInfoDao.addTeamId(noticeDto.getTeamId(),replyDto.getUserId());
+        //加入团队通知给发起人
+        NoticeDto replyNotice = buildNoticeInfo(noticeDto.getCreateBy(),noticeDto.getCreateName(), noticeDto.getTeamId(),noticeDto.getTeamName(),replyDto.getUserId(),"reply");
+        noticeService.createNotice(replyNotice);
+        log.info("回复邀请通知结束");
         return Boolean.TRUE;
+    }
+
+    private NoticeDto getByNoticeId(Long noticeId){
+       return noticeService.getById(noticeId);
     }
 
     //获取用户信息

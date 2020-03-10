@@ -36,6 +36,7 @@ public class UserInfoDto implements Serializable {
     private String confirmPassword;
 
     //用户类型 传中文 成员，团长
+    @NotBlank(message = "注册裂隙不能为空，团长或成员")
     private String userType;
 
     //图片地址

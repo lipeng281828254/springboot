@@ -8,6 +8,8 @@ import com.dapeng.springboot.util.ParamCheckUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -140,6 +142,12 @@ public class UserInfoService {
         return userInfoDto;
     }
 
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public boolean addTeamId(Long teamId,Long id){
+       int i = userInfoDao.addTeamId(teamId,id);
+       return i == 1;
+    }
 
 
 }

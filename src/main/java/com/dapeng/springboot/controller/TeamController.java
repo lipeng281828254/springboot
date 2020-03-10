@@ -1,9 +1,11 @@
 package com.dapeng.springboot.controller;
 
 import com.dapeng.springboot.dto.InviteDto;
+import com.dapeng.springboot.dto.ReplyDto;
 import com.dapeng.springboot.dto.TeamDto;
 import com.dapeng.springboot.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -31,8 +33,20 @@ public class TeamController {
         return teamService.createTeam(teamDto);
     }
 
+    @PostMapping("updateTeamName.json")
+    public boolean updateTeamName(@Param("id")Long id,@Param("teamName")String teamName){
+        return teamService.updateTeam(id,teamName);
+    }
+
+    //回复消息
+    @PostMapping("replyNotice.json")
+    public Boolean acceptUser(@Valid @RequestBody ReplyDto replyDto){
+        return teamService.replyUser(replyDto);
+    }
+
+    //邀请入团
     @PostMapping("invite.json")
     public Boolean inviteUser(@Valid @RequestBody InviteDto inviteDto){
-        return teamService.invite(inviteDto);
+        return teamService.inviteUser(inviteDto);
     }
 }

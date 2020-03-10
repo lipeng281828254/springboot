@@ -10,7 +10,7 @@ import java.io.Serializable;
  * @author lipeng
  * @version 1.0
  * @date 2020/3/10 18:44
- * @message：邀请入团实体
+ * @message：回复入团实体
  */
 @Data
 public class InviteDto implements Serializable {
@@ -18,10 +18,10 @@ public class InviteDto implements Serializable {
     /**
      * 邀请用户id
      */
-    @NotBlank(message = "被邀请人不能为空")
+    @NotNull(message = "成员id不能为空")
     private Long userId;
 
-    @NotNull(message = "团队不能为空")
-    private Long teamId;
+    @NotNull(message = "团队创建人id不能为空")
+    private Long createBy;
 
 }

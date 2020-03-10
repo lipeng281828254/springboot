@@ -3,6 +3,7 @@ package com.dapeng.springboot.dto;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -19,7 +20,7 @@ public class TeamDto implements Serializable {
     @NotBlank(message = "团队名称不能为空")
     private String teamName;
 
-    @NotBlank(message = "创建人不能为空")
+    @NotNull(message = "创建人不能为空")
     private Long userId;
 
 }
