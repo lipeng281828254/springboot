@@ -59,8 +59,8 @@ public class UserInfoEntity implements Serializable {
     @Column(name = "user_type")
     private String userType;
 
-    @Column(name = "term_id")
-    private Long termId;
+    @Column(name = "team_id")
+    private Long teamId;
 
     @Column(name = "position")
     private String position;

@@ -17,7 +17,6 @@ import java.util.Map;
  * 〈功能〉：TODO
  * ==================================================
  */
-
 @Entity
 @Table(name = "user")
 public class UserEntity implements Serializable {

@@ -1,12 +1,10 @@
 package com.dapeng.springboot.controller;
 
+import com.dapeng.springboot.dto.InviteDto;
 import com.dapeng.springboot.dto.TeamDto;
 import com.dapeng.springboot.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -31,5 +29,10 @@ public class TeamController {
     @PostMapping("createTeam.json")
     public Boolean createTeam(@Valid @RequestBody TeamDto teamDto) {
         return teamService.createTeam(teamDto);
+    }
+
+    @PostMapping("invite.json")
+    public Boolean inviteUser(@Valid @RequestBody InviteDto inviteDto){
+        return teamService.invite(inviteDto);
     }
 }
