@@ -24,6 +24,9 @@ public class TeamEntity implements Serializable {
     @Column(name = "id",columnDefinition = "bigint(18) comment '主键'")
     private Long id;
 
+    @Column(name = "team_name",columnDefinition = "varchar(256) comment '团队名'")
+    private String teamName;
+
     @Column(name = "create_by",columnDefinition = "bigint(18) comment '创建人'")
     private Long createBy;
 
