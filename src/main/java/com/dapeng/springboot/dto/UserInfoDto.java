@@ -36,7 +36,7 @@ public class UserInfoDto implements Serializable {
     @NotBlank(message = "确认密码不能为空")
     private String confirmPassword;
 
-    //用户类型 传中文 01成员，02团长
+    //用户类型 传中文 01-成员，02-团队负责人
     @NotBlank(message = "注册裂隙不能为空，团长或成员")
     private String userType;
 
