@@ -7,6 +7,7 @@ import com.dapeng.springboot.util.EncryptionUtil;
 import com.dapeng.springboot.util.ParamCheckUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,17 +27,20 @@ public class UserInfoService {
 
     @Resource
     private UserInfoDao userInfoDao;
-
+    @Autowired
+    private TeamService teamService;
     /**
      * 添加用户
      *
      * @param dto
      * @return
      */
+    @Transactional
     public UserInfoDto addUserInfo(UserInfoDto dto) {
         log.info("添加用户入参：{}", dto);
         UserInfoDto resp = new UserInfoDto();
         try {
+            dto.checkTeamName();
             if (!ParamCheckUtil.passwordCheck(dto.getPassword())){
                 throw new RuntimeException("密码必须包含数字和英文且在8-16位，可以包含特殊字符");
             }
@@ -51,6 +55,8 @@ public class UserInfoService {
             entity.setPassword(EncryptionUtil.getEncryp(password));//加密
             UserInfoEntity entity1 = userInfoDao.save(entity);
             BeanUtils.copyProperties(entity1, resp);
+            //负责人注册团队
+            createTeam(dto.getTeamName(),resp.getId(),dto.getUserType());
         } catch (RuntimeException e) {
             log.error("保存用户失败，原因：{}", e.getMessage());
             throw new RuntimeException(e.getMessage());
@@ -60,6 +66,20 @@ public class UserInfoService {
         }
         log.info("添加用户结果：{}", resp);
         return resp;
+    }
+
+    //创建团队
+    private void createTeam(String teamName,Long userId,String userType){
+        //创建团队
+        if ("02".equals(userType)){
+            TeamDto teamDto = new TeamDto();
+            teamDto.setTeamName(teamName);
+            teamDto.setUserId(userId);
+            boolean success = teamService.createTeam(teamDto);
+            if (!success){
+                throw new RuntimeException("负责人注册失败");
+            }
+        }
     }
 
     /**

@@ -24,29 +24,29 @@ public class TeamController {
     private TeamService teamService;
 
     /**
-     * 创建团队
-     * @param teamDto
+     * 创建团队 注册团队负责人时一起创建
+     *
+     * @param
      * @return
      */
-    @PostMapping("createTeam.json")
-    public Boolean createTeam(@Valid @RequestBody TeamDto teamDto) {
-        return teamService.createTeam(teamDto);
-    }
-
+//    @PostMapping("createTeam.json")
+//    public Boolean createTeam(@Valid @RequestBody TeamDto teamDto) {
+//        return teamService.createTeam(teamDto);
+//    }
     @PostMapping("updateTeamName.json")
-    public boolean updateTeamName(@Param("id")Long id,@Param("teamName")String teamName){
-        return teamService.updateTeam(id,teamName);
+    public boolean updateTeamName(@Param("id") Long id, @Param("teamName") String teamName) {
+        return teamService.updateTeam(id, teamName);
     }
 
     //回复消息
     @PostMapping("replyNotice.json")
-    public Boolean acceptUser(@Valid @RequestBody ReplyDto replyDto){
+    public Boolean acceptUser(@Valid @RequestBody ReplyDto replyDto) {
         return teamService.replyUser(replyDto);
     }
 
     //邀请入团
     @PostMapping("invite.json")
-    public Boolean inviteUser(@Valid @RequestBody InviteDto inviteDto){
+    public Boolean inviteUser(@Valid @RequestBody InviteDto inviteDto) {
         return teamService.inviteUser(inviteDto);
     }
 }

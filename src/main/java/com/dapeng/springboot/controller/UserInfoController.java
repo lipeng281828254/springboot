@@ -27,8 +27,8 @@ public class UserInfoController {
      * @param dto
      * @return
      */
-    @PostMapping("/addUserInfo.json")
-    public UserInfoDto addUserInfo(@Valid @RequestBody UserInfoDto dto){
+    @GetMapping("/addUserInfo.json")
+    public UserInfoDto addUserInfo(@Valid  UserInfoDto dto){
         return userInfoService.addUserInfo(dto);
     }
 
