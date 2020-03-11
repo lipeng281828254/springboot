@@ -34,7 +34,7 @@ public class NoticeController {
 
     //修改消息状态 未读变已读
     @GetMapping("/changeStatusToRead.json")
-    public boolean changeStatusToRead(@Param("id") Long id){
+    public boolean changeStatusToRead(Long id){
         return noticeService.chageStatus(id);
     }
 }

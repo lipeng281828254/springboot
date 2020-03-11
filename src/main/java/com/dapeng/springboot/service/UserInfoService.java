@@ -121,6 +121,7 @@ public class UserInfoService {
             throw new RuntimeException("未查询到用户信息");
         }
         BeanUtils.copyProperties(upLoginDto,entity);
+        entity.setEmail(upLoginDto.getLoginName());
         userInfoDao.save(entity);
     }
 

@@ -46,6 +46,17 @@ public class UserInfoDto implements Serializable {
     //团队名称
     private String teamName;
 
+    /************项目信息*************/
+    //所在项目中的角色
+    private String projectRole;
+
+    //项目邀请人userid
+    private Long inviteId;
+
+    //项目邀请人
+    private String inviteName;
+
+
 
     public void checkTeamName() {
         if ("02".equals(userType) && StringUtils.isEmpty(teamName)) {

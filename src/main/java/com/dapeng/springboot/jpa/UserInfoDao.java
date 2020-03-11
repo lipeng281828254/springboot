@@ -1,11 +1,14 @@
 package com.dapeng.springboot.jpa;
 
+import com.dapeng.springboot.dto.UserInfoDto;
 import com.dapeng.springboot.entity.UserInfoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * @author lipeng
@@ -32,6 +35,8 @@ public interface UserInfoDao extends JpaRepository<UserInfoEntity,Long>, JpaSpec
     @Query(value = "UPDATE user_info SET team_id=?1 where id=?2",nativeQuery = true)
     @Modifying
     int addTeamId(Long teamId, Long userId);
+
+
 //
 //    //修改密码
 //    @Query(value = "UPDATE tab_register SET psd=?2 WHERE id=?1", nativeQuery = true)
