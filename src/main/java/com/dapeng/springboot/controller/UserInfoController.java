@@ -57,4 +57,9 @@ public class UserInfoController {
         HttpSession session = request.getSession();
         return userInfoService.login(loginDto,session);
     }
+
+    @GetMapping("/")
+    public UserInfoDto getByLoginName(String loginName){
+        return userInfoService.getByLoginName(loginName);
+    }
 }

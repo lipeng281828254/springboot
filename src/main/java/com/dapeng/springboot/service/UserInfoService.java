@@ -29,6 +29,7 @@ public class UserInfoService {
     private UserInfoDao userInfoDao;
     @Autowired
     private TeamService teamService;
+
     /**
      * 添加用户
      *
@@ -41,7 +42,7 @@ public class UserInfoService {
         UserInfoDto resp = new UserInfoDto();
         try {
             dto.checkTeamName();
-            if (!ParamCheckUtil.passwordCheck(dto.getPassword())){
+            if (!ParamCheckUtil.passwordCheck(dto.getPassword())) {
                 throw new RuntimeException("密码必须包含数字和英文且在8-16位，可以包含特殊字符");
             }
             if (!dto.getPassword().equals(dto.getConfirmPassword())) {
@@ -56,7 +57,7 @@ public class UserInfoService {
             UserInfoEntity entity1 = userInfoDao.save(entity);
             BeanUtils.copyProperties(entity1, resp);
             //负责人注册团队
-            createTeam(dto.getTeamName(),resp.getId(),dto.getUserType());
+            createTeam(dto.getTeamName(), resp.getId(), dto.getUserType());
         } catch (RuntimeException e) {
             log.error("保存用户失败，原因：{}", e.getMessage());
             throw new RuntimeException(e.getMessage());
@@ -69,14 +70,14 @@ public class UserInfoService {
     }
 
     //创建团队
-    private void createTeam(String teamName,Long userId,String userType){
+    private void createTeam(String teamName, Long userId, String userType) {
         //创建团队
-        if ("02".equals(userType)){
+        if ("02".equals(userType)) {
             TeamDto teamDto = new TeamDto();
             teamDto.setTeamName(teamName);
             teamDto.setUserId(userId);
             boolean success = teamService.createTeam(teamDto);
-            if (!success){
+            if (!success) {
                 throw new RuntimeException("负责人注册失败");
             }
         }
@@ -84,29 +85,30 @@ public class UserInfoService {
 
     /**
      * 根据用户id更新信息
+     *
      * @param dto
      */
-    public void updateUserInfo(UpdateUserInfoDto dto){
-        log.info("更新用户信息入参：{}",dto);
+    public void updateUserInfo(UpdateUserInfoDto dto) {
+        log.info("更新用户信息入参：{}", dto);
         UserInfoEntity entity = userInfoDao.getOne(dto.getId());
-        if (entity == null){
+        if (entity == null) {
             throw new RuntimeException("没有查询到用户信息");
         }
-        log.info("用户信息：{}",entity);
-        BeanUtils.copyProperties(dto,entity);
+        log.info("用户信息：{}", entity);
+        BeanUtils.copyProperties(dto, entity);
         UserInfoEntity result = userInfoDao.save(entity);
-        log.info("更新用户信息结束,{}",result);
+        log.info("更新用户信息结束,{}", result);
     }
 
     //校验密码是否当前用户密码
-    public UserInfoEntity checkPassword(ChekcPasswordDto dto){
+    public UserInfoEntity checkPassword(ChekcPasswordDto dto) {
         UserInfoEntity entity = userInfoDao.getOne(dto.getId());
-        if (entity==null){
+        if (entity == null) {
             throw new RuntimeException("未查询到用户信息");
         }
         String password = EncryptionUtil.getEncryp(dto.getPassword());
-        log.info("传入密码，{}---已有密码：{}",password,entity.getPassword());
-        if (!password.equals(entity.getPassword())){
+        log.info("传入密码，{}---已有密码：{}", password, entity.getPassword());
+        if (!password.equals(entity.getPassword())) {
             throw new RuntimeException("密码错误");
         }
         return entity;
@@ -115,60 +117,72 @@ public class UserInfoService {
     /**
      * 更新邮箱
      */
-    public void updateLoginName(UpLoginDto upLoginDto){
+    public void updateLoginName(UpLoginDto upLoginDto) {
         UserInfoEntity entity = userInfoDao.getOne(upLoginDto.getId());
-        if (entity==null){
+        if (entity == null) {
             throw new RuntimeException("未查询到用户信息");
         }
-        BeanUtils.copyProperties(upLoginDto,entity);
+        BeanUtils.copyProperties(upLoginDto, entity);
         entity.setEmail(upLoginDto.getLoginName());
         userInfoDao.save(entity);
     }
 
     /**
      * 修改密码
+     *
      * @param dto
      */
-    public void updatePassword(UpdatePassword dto){
-        if (!ParamCheckUtil.passwordCheck(dto.getPassword())){
+    public void updatePassword(UpdatePassword dto) {
+        if (!ParamCheckUtil.passwordCheck(dto.getPassword())) {
             throw new RuntimeException("密码必须包含数字和英文且在8-16位，可以包含特殊字符");
         }
         if (!dto.getPassword().equals(dto.getConfirmPassword())) {
             throw new RuntimeException("密码和确认密码不一致");
         }
         UserInfoEntity entity = userInfoDao.getOne(dto.getId());
-        BeanUtils.copyProperties(dto,entity);
+        BeanUtils.copyProperties(dto, entity);
         entity.setPassword(EncryptionUtil.getEncryp(dto.getPassword()));//加密
         userInfoDao.save(entity);
     }
 
     /**
      * 登录功能
+     *
      * @param loginDto
      * @return
      */
-    public UserInfoDto login(LoginDto loginDto, HttpSession session){
+    public UserInfoDto login(LoginDto loginDto, HttpSession session) {
         UserInfoEntity entity = userInfoDao.getByLoginName(loginDto.getLoginName());
-        if (entity == null){
+        if (entity == null) {
             throw new RuntimeException("用户不存在");
         }
         String password = EncryptionUtil.getEncryp(loginDto.getPassword());
-        if (!password.equals(entity.getPassword())){
+        if (!password.equals(entity.getPassword())) {
             throw new RuntimeException("密码或用户名错误");
         }
         UserInfoDto userInfoDto = new UserInfoDto();
-        BeanUtils.copyProperties(entity,userInfoDto);
+        BeanUtils.copyProperties(entity, userInfoDto);
         //放入session
-        session.setAttribute("userInfo",userInfoDto);
+        session.setAttribute("userInfo", userInfoDto);
         return userInfoDto;
     }
 
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public boolean addTeamId(Long teamId,Long id){
-       int i = userInfoDao.addTeamId(teamId,id);
-       return i == 1;
+    public boolean addTeamId(Long teamId, Long id) {
+        int i = userInfoDao.addTeamId(teamId, id);
+        return i == 1;
     }
 
 
+    //根据登录名查询用户信息
+    public UserInfoDto getByLoginName(String loginName) {
+        UserInfoEntity entity = userInfoDao.getByLoginName(loginName);
+        if (entity == null) {
+            throw new RuntimeException("用户不存在");
+        }
+        UserInfoDto userInfoDto = new UserInfoDto();
+        BeanUtils.copyProperties(entity, userInfoDto);
+        return userInfoDto;
+    }
 }

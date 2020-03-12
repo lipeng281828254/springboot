@@ -73,8 +73,16 @@ public class ProjectController {
     }
 
     //更新项目
-    @GetMapping("updateProject.json")
-    public Boolean updateProjectById(Long id,String projectName,String descript){
+    @PostMapping("updateProject.json")
+    public Boolean updateProjectById(@Param("id") Long id,@Param("projectName") String projectName,@Param("descript") String descript){
         return projectService.updateProjectById(id,projectName,descript);
     }
+
+    //邀请加入项目
+    @GetMapping("inviteToProject.json")
+    public Boolean inviteToProject(){
+        return null;
+    }
+
+    //回复加入项目
 }
