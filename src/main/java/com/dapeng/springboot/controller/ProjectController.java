@@ -78,11 +78,11 @@ public class ProjectController {
         return projectService.updateProjectById(id,projectName,descript);
     }
 
-    //邀请加入项目
+    //邀请加入项目  ..如果属于其他团队，不能加入，如果不属于，同意后，先加入团队，再加入项目。如果是该团队成员，直接加入项目。
     @GetMapping("inviteToProject.json")
     public Boolean inviteToProject(){
         return null;
     }
 
-    //回复加入项目
+    //回复加入团队后加入项目
 }
