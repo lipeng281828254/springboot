@@ -13,7 +13,7 @@ import java.io.Serializable;
  * @message：回复入团实体
  */
 @Data
-public class InviteDto implements Serializable {
+public class InviteTeamDto implements Serializable {
 
     /**
      * 邀请用户id

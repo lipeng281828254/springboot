@@ -1,8 +1,7 @@
 package com.dapeng.springboot.controller;
 
-import com.dapeng.springboot.dto.InviteDto;
+import com.dapeng.springboot.dto.InviteTeamDto;
 import com.dapeng.springboot.dto.ReplyDto;
-import com.dapeng.springboot.dto.TeamDto;
 import com.dapeng.springboot.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -46,7 +45,7 @@ public class TeamController {
 
     //邀请入团
     @PostMapping("invite.json")
-    public Boolean inviteUser(@Valid @RequestBody InviteDto inviteDto) {
+    public Boolean inviteUser(@Valid @RequestBody InviteTeamDto inviteDto) {
         return teamService.inviteUser(inviteDto);
     }
 }

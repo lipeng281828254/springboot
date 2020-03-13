@@ -168,13 +168,6 @@ public class UserInfoService {
     }
 
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public boolean addTeamId(Long teamId, Long id) {
-        int i = userInfoDao.addTeamId(teamId, id);
-        return i == 1;
-    }
-
-
     //根据登录名查询用户信息
     public UserInfoDto getByLoginName(String loginName) {
         UserInfoEntity entity = userInfoDao.getByLoginName(loginName);

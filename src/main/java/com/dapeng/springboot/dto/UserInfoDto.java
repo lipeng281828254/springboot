@@ -43,6 +43,9 @@ public class UserInfoDto implements Serializable {
     //图片地址
     private String headImgId;
 
+    //团队id
+    private Long teamId;
+
     //团队名称
     private String teamName;
 

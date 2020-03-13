@@ -1,5 +1,6 @@
 package com.dapeng.springboot.controller;
 
+import com.dapeng.springboot.dto.InviteProjectDto;
 import com.dapeng.springboot.dto.ProjectInfoDto;
 import com.dapeng.springboot.dto.UserInfoDto;
 import com.dapeng.springboot.service.ProjectService;
@@ -80,8 +81,12 @@ public class ProjectController {
 
     //邀请加入项目  ..如果属于其他团队，不能加入，如果不属于，同意后，先加入团队，再加入项目。如果是该团队成员，直接加入项目。
     @GetMapping("inviteToProject.json")
-    public Boolean inviteToProject(){
-        return null;
+    public Boolean inviteToProject(InviteProjectDto inviteProjectDto,HttpServletRequest request){
+        HttpSession session = request.getSession();
+        UserInfoDto userInfo = (UserInfoDto) session.getAttribute("userInfo");
+        Long createId = userInfo.getId();//获取团队负责人id
+        inviteProjectDto.setCreateBy(createId);
+        return projectService.inviteIntoProject(inviteProjectDto,userInfo);
     }
 
     //回复加入团队后加入项目

@@ -32,9 +32,9 @@ public interface UserInfoDao extends JpaRepository<UserInfoEntity,Long>, JpaSpec
     UserInfoEntity getByLoginName(String loginName);
 
     @Transactional
-    @Query(value = "UPDATE user_info SET team_id=?1 where id=?2",nativeQuery = true)
+    @Query(value = "UPDATE user_info SET team_id=?1,team_name=?2 where id=?3",nativeQuery = true)
     @Modifying
-    int addTeamId(Long teamId, Long userId);
+    int addTeamId(Long teamId,String teamName, Long userId);
 
 
 //

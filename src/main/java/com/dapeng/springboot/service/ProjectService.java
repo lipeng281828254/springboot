@@ -1,5 +1,6 @@
 package com.dapeng.springboot.service;
 
+import com.dapeng.springboot.dto.InviteProjectDto;
 import com.dapeng.springboot.dto.ProjectInfoDto;
 import com.dapeng.springboot.dto.UserInfoDto;
 import com.dapeng.springboot.entity.ProjectEntity;
@@ -129,5 +130,35 @@ public class ProjectService {
             throw new RuntimeException("项目不存在");
         }
         return projectDao.updateInfoById(id,projectName,descript) == 1;
+    }
+
+    /**
+     * 邀请成员入项目
+     * @param inviteProjectDto
+     * @return
+     */
+    public Boolean inviteIntoProject(InviteProjectDto inviteProjectDto,UserInfoDto createInfo) {
+        UserInfoEntity userInfo = userInfoDao.getOne(inviteProjectDto.getUserId());
+        if (userInfo == null){
+            throw new RuntimeException("邀请成员不存在");
+        }
+        Long teamId = createInfo.getTeamId();
+        if (userInfo.getTeamId() != null && userInfo.getTeamId() == teamId){
+            //团队成员，直接加入项目
+            ProjectUserReltiveEntity reltiveEntity = new ProjectUserReltiveEntity();
+            reltiveEntity.setProjectId(inviteProjectDto.getProjectId());
+            reltiveEntity.setUserId(userInfo.getId());
+            reltiveEntity.setUserName(userInfo.getUserName());
+            reltiveEntity.setProjectRole("编辑者");
+            projectUserDao.save(reltiveEntity);
+            return true;
+        }
+        //如果是其他团队的成员
+        if (userInfo.getTeamId() != null && userInfo.getTeamId() != teamId){
+            throw new RuntimeException("已在其他团队中，无法加入当前项目");
+        }
+        //没有在团队中，邀请加入团队，生成消息
+
+        return true;
     }
 }

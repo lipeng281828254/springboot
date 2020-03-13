@@ -2,7 +2,6 @@ package com.dapeng.springboot.service;
 
 import com.dapeng.springboot.common.ConstantRecord;
 import com.dapeng.springboot.dto.*;
-import com.dapeng.springboot.entity.NoticeEntity;
 import com.dapeng.springboot.entity.TeamEntity;
 import com.dapeng.springboot.entity.UserInfoEntity;
 import com.dapeng.springboot.jpa.TeamDao;
@@ -11,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -47,7 +45,7 @@ public class TeamService {
             entity.setCreateName(userInfo.getUserName());
         }
         TeamEntity resultEntity = teamDao.save(entity);
-        userInfoDao.addTeamId(resultEntity.getId(),teamDto.getUserId());
+        userInfoDao.addTeamId(resultEntity.getId(),resultEntity.getTeamName(),teamDto.getUserId());
         return Boolean.TRUE;
     }
 
@@ -76,7 +74,7 @@ public class TeamService {
      * @param inviteDto
      * @return
      */
-    public Boolean inviteUser(InviteDto inviteDto) {
+    public Boolean inviteUser(InviteTeamDto inviteDto) {
         UserInfoEntity userInfo = getUserInfoById(inviteDto.getUserId());
         if (userInfo.getTeamId() != null){
             throw new RuntimeException("用户已加入团队");
@@ -140,7 +138,7 @@ public class TeamService {
         }
         //查询通知详情
         NoticeDto noticeDto = getByNoticeId(replyDto.getNoticeId());
-        userInfoDao.addTeamId(noticeDto.getTeamId(),replyDto.getUserId());
+        userInfoDao.addTeamId(noticeDto.getTeamId(),noticeDto.getTeamName(),replyDto.getUserId());
         //加入团队通知给发起人
         NoticeDto replyNotice = buildNoticeInfo(noticeDto.getCreateBy(),noticeDto.getCreateName(), noticeDto.getTeamId(),noticeDto.getTeamName(),replyDto.getUserId(),"reply");
         noticeService.createNotice(replyNotice);
