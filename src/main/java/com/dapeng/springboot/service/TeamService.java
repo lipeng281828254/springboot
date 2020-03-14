@@ -83,13 +83,13 @@ public class TeamService {
         //消息创建者就是团长
         UserInfoEntity owerInfo = getUserInfoById(inviteDto.getCreateBy());
         TeamEntity teamEntity = getById(owerInfo.getTeamId());
-        NoticeDto noticeDto = buildNoticeInfo(inviteDto.getUserId(),userInfo.getUserName(),teamEntity.getId(),teamEntity.getTeamName(),inviteDto.getCreateBy(),"invite");
+        NoticeDto noticeDto = buildNoticeInfo(inviteDto.getUserId(),userInfo.getUserName(),teamEntity.getId(),teamEntity.getTeamName(),inviteDto.getCreateBy(),"invite",null);
         noticeService.createNotice(noticeDto);
         return Boolean.TRUE;
     }
 
     //构建通知消息
-    private NoticeDto buildNoticeInfo(Long handlerId,String handlerName,Long teamId,String teamName,Long createBy,String flag) {
+    private NoticeDto buildNoticeInfo(Long handlerId,String handlerName,Long teamId,String teamName,Long createBy,String flag,String isOk) {
         NoticeDto noticeDto = new NoticeDto();
         noticeDto.setHandlerId(handlerId);//处理人
         noticeDto.setHandlerName(handlerName);
@@ -114,7 +114,11 @@ public class TeamService {
             if (!StringUtils.isEmpty(createUser.getUserName())){
                 sb.append(createUser.getUserName());
             }
-            sb.append("已加入");
+            if (!"ok".equals(isOk)){
+                sb.append("已拒绝加入");
+            } else {
+                sb.append("已加入");
+            }
             sb.append(teamName).append("团队");
         }
         noticeDto.setContent(sb.toString());
@@ -129,7 +133,12 @@ public class TeamService {
      */
     public boolean replyUser(ReplyDto replyDto){
         log.info("回复邀请通知入参，{}",replyDto);
+        NoticeDto noticeDto = getByNoticeId(replyDto.getNoticeId());
         if (!"OK".equals(replyDto.getIsOk())){
+            //生成拒绝的数据
+            //加入团队通知给发起人
+            NoticeDto replyNotice = buildNoticeInfo(noticeDto.getCreateBy(),noticeDto.getCreateName(), noticeDto.getTeamId(),noticeDto.getTeamName(),replyDto.getUserId(),"reply","ok");
+            noticeService.createNotice(replyNotice);
             return false;
         }
         UserInfoEntity userInfo = getUserInfoById(replyDto.getUserId());
@@ -137,10 +146,9 @@ public class TeamService {
             throw new RuntimeException("成员已在其他团队里");
         }
         //查询通知详情
-        NoticeDto noticeDto = getByNoticeId(replyDto.getNoticeId());
         userInfoDao.addTeamId(noticeDto.getTeamId(),noticeDto.getTeamName(),replyDto.getUserId());
         //加入团队通知给发起人
-        NoticeDto replyNotice = buildNoticeInfo(noticeDto.getCreateBy(),noticeDto.getCreateName(), noticeDto.getTeamId(),noticeDto.getTeamName(),replyDto.getUserId(),"reply");
+        NoticeDto replyNotice = buildNoticeInfo(noticeDto.getCreateBy(),noticeDto.getCreateName(), noticeDto.getTeamId(),noticeDto.getTeamName(),replyDto.getUserId(),"reply","ok");
         noticeService.createNotice(replyNotice);
         log.info("回复邀请通知结束");
         return Boolean.TRUE;

@@ -64,6 +64,9 @@ public class UserInfoEntity implements Serializable {
     @Column(name = "team_id")
     private Long teamId;
 
+    @Column(name = "team_name",columnDefinition = "varchar(256) comment '团队名称'")
+    private String teamName;
+
     @Column(name = "position")
     private String position;
 

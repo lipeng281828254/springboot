@@ -2,6 +2,7 @@ package com.dapeng.springboot.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,6 +14,7 @@ import java.util.Date;
  * @date 2020/3/11 23:10
  * @message：
  */
+@ToString
 @Setter
 @Getter
 @Entity

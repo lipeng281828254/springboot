@@ -2,8 +2,10 @@ package com.dapeng.springboot.controller;
 
 import com.dapeng.springboot.dto.InviteProjectDto;
 import com.dapeng.springboot.dto.ProjectInfoDto;
+import com.dapeng.springboot.dto.ReplyDto;
 import com.dapeng.springboot.dto.UserInfoDto;
 import com.dapeng.springboot.service.ProjectService;
+import com.dapeng.springboot.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
@@ -79,15 +81,29 @@ public class ProjectController {
         return projectService.updateProjectById(id,projectName,descript);
     }
 
+//    @Autowired
+//    private UserInfoService user;
     //邀请加入项目  ..如果属于其他团队，不能加入，如果不属于，同意后，先加入团队，再加入项目。如果是该团队成员，直接加入项目。
-    @GetMapping("inviteToProject.json")
-    public Boolean inviteToProject(InviteProjectDto inviteProjectDto,HttpServletRequest request){
+    @PostMapping("inviteToProject.json")
+    public Boolean inviteToProject(@Valid @RequestBody InviteProjectDto inviteProjectDto,HttpServletRequest request){
         HttpSession session = request.getSession();
         UserInfoDto userInfo = (UserInfoDto) session.getAttribute("userInfo");
         Long createId = userInfo.getId();//获取团队负责人id
+//        UserInfoDto userInfo = user.getByLoginName("321134223@qq.com");
         inviteProjectDto.setCreateBy(createId);
         return projectService.inviteIntoProject(inviteProjectDto,userInfo);
     }
 
+    @Autowired
+    private UserInfoService userInfoService;
     //回复加入团队后加入项目
+    @GetMapping("replayToProject.json")
+    public Boolean repalyToProject(ReplyDto replyDto,HttpServletRequest request){
+//        HttpSession session = request.getSession();
+//        UserInfoDto userInfo = (UserInfoDto) session.getAttribute("userInfo");
+//        //创建人是userInfo
+        UserInfoDto userInfo = userInfoService.getByLoginName("281828254@qq.com");
+        replyDto.setUserId(userInfo.getId());
+        return projectService.replyToProject(replyDto,userInfo);
+    }
 }

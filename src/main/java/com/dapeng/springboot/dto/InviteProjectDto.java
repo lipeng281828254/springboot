@@ -2,6 +2,7 @@ package com.dapeng.springboot.dto;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -18,8 +19,10 @@ public class InviteProjectDto implements Serializable {
     private Long createBy;
 
     //邀请成员id
+    @NotNull(message = "被邀请人id不能为空")
     private Long userId;
 
     //项目id
+    @NotNull(message = "项目id不能为空")
     private Long projectId;
 }
