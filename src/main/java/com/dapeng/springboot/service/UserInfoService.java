@@ -178,4 +178,15 @@ public class UserInfoService {
         BeanUtils.copyProperties(entity, userInfoDto);
         return userInfoDto;
     }
+
+    //根据Id查询用户
+    public UserInfoDto findById(Long userId) {
+        UserInfoEntity entity = userInfoDao.getOne(userId);
+        if (entity == null){
+            throw new RuntimeException("用户不存在");
+        }
+        UserInfoDto dto = new UserInfoDto();
+        BeanUtils.copyProperties(entity,dto);
+        return dto;
+    }
 }

@@ -34,7 +34,7 @@ public class JobEntity implements Serializable {
     @Column(name = "type",columnDefinition = "varchar(32) comment '类型'")
     private String type;
 
-    @Column(name = "需求类型",columnDefinition = "varchar(64) comment '需求类型'")
+    @Column(name = "need_type",columnDefinition = "varchar(64) comment '需求类型'")
     private String needType;
 
     @Column(name = "need_from",columnDefinition = "varchar(64) comment '需求来源'")
@@ -95,4 +95,7 @@ public class JobEntity implements Serializable {
     //描述
     @Column(name = "descript",columnDefinition = "varchar(500) comment '描述'")
     private String descript;
+    //附件路径
+    @Column(name = "file_id",columnDefinition = "varchar(128) comment '附件路径'")
+    private String fileId;
 }

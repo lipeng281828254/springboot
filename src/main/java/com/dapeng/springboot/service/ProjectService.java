@@ -255,4 +255,15 @@ public class ProjectService {
     private NoticeDto getByNoticeId(Long noticeId){
         return noticeService.getById(noticeId);
     }
+
+    //根据id查询
+    public ProjectInfoDto findById(Long projectId) {
+        ProjectEntity entity = projectDao.getOne(projectId);
+        if (entity == null){
+           throw new RuntimeException("未查询到项目");
+        }
+        ProjectInfoDto projectInfoDto = new ProjectInfoDto();
+        BeanUtils.copyProperties(entity,projectInfoDto);
+        return projectInfoDto;
+    }
 }

@@ -2,6 +2,8 @@ package com.dapeng.springboot.dto;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -18,6 +20,7 @@ public class JobDto implements Serializable {
     private Long id ;
 
     //标题
+    @NotBlank(message = "标题不能为空")
     private String title;
 
     //状态
@@ -31,6 +34,7 @@ public class JobDto implements Serializable {
     /**
      * 类型：需求，任务，缺陷，迭代
      */
+    @NotBlank(message = "创建类型不能为空")
     private String type;
 
     /**
@@ -63,6 +67,7 @@ public class JobDto implements Serializable {
     /**
      * 项目id
      */
+    @NotNull(message = "项目id不能为空")
     private Long projectId;
     /**
      * 项目名称
@@ -81,6 +86,7 @@ public class JobDto implements Serializable {
     private String createName;
 
     //处理人
+    @NotNull(message = "处理人id不能为空")
     private Long handlerId;
 
     //处理人姓名
@@ -99,4 +105,7 @@ public class JobDto implements Serializable {
 
     //描述
     private String descript;
+
+    //附件路径
+    private String fileId;
 }
