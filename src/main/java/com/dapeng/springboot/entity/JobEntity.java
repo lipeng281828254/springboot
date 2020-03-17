@@ -93,7 +93,7 @@ public class JobEntity implements Serializable {
     private Date updateTime;
 
     //描述
-    @Column(name = "descript",columnDefinition = "varchar(500) comment '描述'")
+    @Column(name = "descript",columnDefinition = "varchar(1000) comment '描述'")
     private String descript;
     //附件路径
     @Column(name = "file_id",columnDefinition = "varchar(128) comment '附件路径'")
