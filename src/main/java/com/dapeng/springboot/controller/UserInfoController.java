@@ -4,6 +4,7 @@ import com.dapeng.springboot.dto.*;
 import com.dapeng.springboot.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -33,13 +34,15 @@ public class UserInfoController {
     }
 
     @PostMapping("/updateUserInfo.json")
-    public void updateUserInfo(@Valid @RequestBody UpdateUserInfoDto dto){
-        userInfoService.updateUserInfo(dto);
+    public void updateUserInfo(@Valid @RequestBody UpdateUserInfoDto dto,HttpServletRequest request){
+        HttpSession session = request.getSession();
+        userInfoService.updateUserInfo(dto,session);
     }
 
     @PostMapping("/updateLoginName.json")
-    public void updateLoginName(@Valid @RequestBody UpLoginDto dto){
-        userInfoService.updateLoginName(dto);
+    public void updateLoginName(@Valid @RequestBody UpLoginDto dto,HttpServletRequest request){
+        HttpSession session = request.getSession();
+        userInfoService.updateLoginName(dto,session);
     }
 
     @PostMapping("/checkPassword.json")
@@ -58,8 +61,31 @@ public class UserInfoController {
         return userInfoService.login(loginDto,session);
     }
 
-    @GetMapping("/")
+    @GetMapping("/getByLoginName.json")
     public UserInfoDto getByLoginName(String loginName){
         return userInfoService.getByLoginName(loginName);
+    }
+    @GetMapping("/getById.json")
+    public UserInfoDto getById(Long id){
+        return userInfoService.getById(id);
+    }
+
+    @GetMapping("/getUserInfo.json")
+    public UserInfoDto getUserInfo(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        if (session == null){
+            throw new RuntimeException("请先登录");
+        }
+        return (UserInfoDto) session.getAttribute("userInfo");
+    }
+
+    @GetMapping("/exit.json")
+    public void tuichu(HttpServletRequest request, SessionStatus sessionStatus){
+        HttpSession session = request.getSession();
+        if (session == null){
+            return;
+        }
+        session.invalidate();
+        sessionStatus.setComplete();
     }
 }

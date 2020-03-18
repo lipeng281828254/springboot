@@ -88,7 +88,7 @@ public class UserInfoService {
      *
      * @param dto
      */
-    public void updateUserInfo(UpdateUserInfoDto dto) {
+    public void updateUserInfo(UpdateUserInfoDto dto,HttpSession session) {
         log.info("更新用户信息入参：{}", dto);
         UserInfoEntity entity = userInfoDao.getOne(dto.getId());
         if (entity == null) {
@@ -98,6 +98,8 @@ public class UserInfoService {
         BeanUtils.copyProperties(dto, entity);
         UserInfoEntity result = userInfoDao.save(entity);
         log.info("更新用户信息结束,{}", result);
+        BeanUtils.copyProperties(entity, dto);
+        session.setAttribute("userInfo",dto);
     }
 
     //校验密码是否当前用户密码
@@ -117,7 +119,7 @@ public class UserInfoService {
     /**
      * 更新邮箱
      */
-    public void updateLoginName(UpLoginDto upLoginDto) {
+    public void updateLoginName(UpLoginDto upLoginDto,HttpSession session) {
         UserInfoEntity entity = userInfoDao.getOne(upLoginDto.getId());
         if (entity == null) {
             throw new RuntimeException("未查询到用户信息");
@@ -125,6 +127,8 @@ public class UserInfoService {
         BeanUtils.copyProperties(upLoginDto, entity);
         entity.setEmail(upLoginDto.getLoginName());
         userInfoDao.save(entity);
+        BeanUtils.copyProperties(entity,upLoginDto);
+        session.setAttribute("userInfo",upLoginDto);
     }
 
     /**
@@ -188,5 +192,15 @@ public class UserInfoService {
         UserInfoDto dto = new UserInfoDto();
         BeanUtils.copyProperties(entity,dto);
         return dto;
+    }
+
+    public UserInfoDto getById(Long id) {
+        UserInfoEntity entity = userInfoDao.getOne(id);
+        if (entity == null){
+            throw new RuntimeException("未查询到成员用户");
+        }
+        UserInfoDto infoDto = new UserInfoDto();
+        BeanUtils.copyProperties(entity,infoDto);
+        return infoDto;
     }
 }
