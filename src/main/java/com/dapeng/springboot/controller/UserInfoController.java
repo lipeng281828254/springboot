@@ -17,7 +17,7 @@ import javax.validation.Valid;
  * @message：用户信息控制层
  */
 @RestController
-@RequestMapping("api/userInfo")
+@RequestMapping(value = "api/userInfo")
 public class UserInfoController {
 
     @Autowired
@@ -28,7 +28,7 @@ public class UserInfoController {
      * @param dto
      * @return
      */
-    @PostMapping("/addUserInfo.json")
+    @PostMapping(value = "/addUserInfo.json")
     public UserInfoDto addUserInfo(@Valid @RequestBody UserInfoDto dto){
         return userInfoService.addUserInfo(dto);
     }
