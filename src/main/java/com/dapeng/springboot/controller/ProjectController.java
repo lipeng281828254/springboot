@@ -22,7 +22,7 @@ import java.util.List;
  * @message：项目控制层
  */
 @RestController
-@RequestMapping("/project/")
+@RequestMapping("api/project/")
 public class ProjectController {
 
     @Autowired

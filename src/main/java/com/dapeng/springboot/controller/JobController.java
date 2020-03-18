@@ -17,7 +17,7 @@ import javax.validation.Valid;
  * @message：
  */
 @RestController
-@RequestMapping("/job/")
+@RequestMapping("api/job/")
 public class JobController {
 
 

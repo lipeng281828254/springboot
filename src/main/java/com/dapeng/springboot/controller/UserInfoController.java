@@ -16,7 +16,7 @@ import javax.validation.Valid;
  * @message：用户信息控制层
  */
 @RestController
-@RequestMapping("/userInfo")
+@RequestMapping("api/userInfo")
 public class UserInfoController {
 
     @Autowired

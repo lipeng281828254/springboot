@@ -16,7 +16,7 @@ import javax.validation.Valid;
  * @message：团队控制层
  */
 @RestController
-@RequestMapping("/team/")
+@RequestMapping("api/team/")
 public class TeamController {
 
     @Autowired

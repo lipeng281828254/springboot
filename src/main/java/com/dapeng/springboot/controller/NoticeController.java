@@ -19,7 +19,7 @@ import java.util.List;
  * @message：消息控制层
  */
 @RestController
-@RequestMapping("/notice/")
+@RequestMapping("api/notice/")
 public class NoticeController {
 
     @Autowired
