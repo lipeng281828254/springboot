@@ -1,6 +1,8 @@
 package com.dapeng.springboot.dto;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.util.StringUtils;
 
 import javax.validation.constraints.Email;
@@ -13,7 +15,8 @@ import java.io.Serializable;
  * @date 2020/3/8 0:04
  * @message：
  */
-@Data
+@Setter
+@Getter
 public class UserInfoDto implements Serializable {
 
 
@@ -67,4 +70,19 @@ public class UserInfoDto implements Serializable {
         }
     }
 
+    @Override
+    public String   toString() {
+        return "UserInfoDto{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", loginName='" + loginName + '\'' +
+                ", userType='" + userType + '\'' +
+                ", headImgId='" + headImgId + '\'' +
+                ", teamId=" + teamId +
+                ", teamName='" + teamName + '\'' +
+                ", projectRole='" + projectRole + '\'' +
+                ", inviteId=" + inviteId +
+                ", inviteName='" + inviteName + '\'' +
+                '}';
+    }
 }

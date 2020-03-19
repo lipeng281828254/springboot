@@ -20,7 +20,7 @@ import java.io.IOException;
 public class SessionFilter implements Filter {
 
     //标示符：表示当前用户未登录(可根据自己项目需要改为json样式)
-    String NO_LOGIN = "您还未登录";
+    String NO_LOGIN = "403";//未登录
 
     //不需要登录就可以访问的路径(比如:注册登录等)
     String[] includeUrls = new String[]{"/api/userInfo/addUserInfo.json", "/api/userInfo/login.json"};
@@ -50,7 +50,8 @@ public class SessionFilter implements Filter {
                 log.info("user--->>>{}", session.getAttribute("userInfo"));
                 filterChain.doFilter(request, response);
             } else {
-                response.getWriter().write(this.NO_LOGIN);
+                throw new RuntimeException("您未登录");
+//                response.getWriter().write(this.NO_LOGIN);
 //                String requestType = request.getHeader("X-Requested-With");
 //                //判断是否是ajax请求
 //                if (requestType != null && "XMLHttpRequest".equals(requestType)) {
@@ -59,7 +60,7 @@ public class SessionFilter implements Filter {
 //                    //重定向到登录页(需要在static文件夹下建立此html文件)
 //                    response.sendRedirect(request.getContextPath() + "/user/login.html");
 //                }
-                return;
+//                return;
             }
 
         }
