@@ -19,4 +19,6 @@ public interface TeamDao extends JpaRepository<TeamEntity,Long>, JpaSpecificatio
     @Query(value = "update team_info set team_name=?2 where id=?1 ",nativeQuery = true)
     @Modifying
     int updateTeamName(Long id, String teamName);
+
+    TeamEntity findByTeamName(String teamName);
 }

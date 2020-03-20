@@ -48,6 +48,9 @@ public class UserInfoService {
             if (!dto.getPassword().equals(dto.getConfirmPassword())) {
                 throw new RuntimeException("密码和确认密码不一致");
             }
+            if(getByLoginName(dto.getLoginName())!=null){
+                throw new RuntimeException("用户名已存在");
+            }
             UserInfoEntity entity = new UserInfoEntity();
             BeanUtils.copyProperties(dto, entity);
             entity.setEmail(dto.getLoginName());//邮箱就是登录名

@@ -37,6 +37,9 @@ public class TeamService {
      */
     public Boolean createTeam(TeamDto teamDto){
         log.info("创建团队入参：{}",teamDto);
+        if(getByTeamName(teamDto.getTeamName())!=null){
+            throw new RuntimeException("团队名称已存在");
+        }
         TeamEntity entity = new TeamEntity();
         BeanUtils.copyProperties(teamDto,entity);
         entity.setCreateBy(teamDto.getUserId());
@@ -47,6 +50,11 @@ public class TeamService {
         TeamEntity resultEntity = teamDao.save(entity);
         userInfoDao.addTeamId(resultEntity.getId(),resultEntity.getTeamName(),teamDto.getUserId());
         return Boolean.TRUE;
+    }
+
+    private TeamEntity getByTeamName(String teamName) {
+
+        return teamDao.findByTeamName(teamName);
     }
 
     /**
