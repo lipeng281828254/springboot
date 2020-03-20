@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author lipeng
@@ -33,11 +35,12 @@ public class JobSerivce {
 
     /**
      * 保存需求，任务缺陷迭代需求任务
+     *
      * @return
      */
-    public JobDto saveJob(JobDto jobDto){
+    public JobDto saveJob(JobDto jobDto) {
         JobEntity entity = new JobEntity();
-        BeanUtils.copyProperties(jobDto,entity);
+        BeanUtils.copyProperties(jobDto, entity);
         UserInfoDto handler = getUserInfo(jobDto.getHandlerId());
         entity.setHandlerName(handler.getUserName());
         entity.setProjectName(getByProjectId(jobDto.getProjectId()).getProjectName());
@@ -46,14 +49,42 @@ public class JobSerivce {
         return jobDto;
     }
 
-    private UserInfoDto getUserInfo(Long userId){
+    private UserInfoDto getUserInfo(Long userId) {
         return userInfoService.findById(userId);
     }
 
-    private ProjectInfoDto getByProjectId(Long projectId){
+    private ProjectInfoDto getByProjectId(Long projectId) {
         return projectService.findById(projectId);
     }
 
-    //查询迭代信息 根据id
+    //根据id删除关系
+    public boolean deleteRelation(Long id) {
+        int count = jobDao.deleteRelation(id);
+        return count == 1;
+    }
+
+    //根据需求id和job类型查询列表
+    public List<JobDto> listJobByDemindAndType(Long demandId, String type) {
+        log.info("根据需求id和类型查询列表,--{}--{}",demandId,type);
+        List<JobEntity> entitys = jobDao.findByDemandIdAndType(demandId, type);
+        if (entitys != null && entitys.size() > 0) {
+            List<JobDto> jobDtos = new ArrayList<>();
+            entitys.forEach(jobEntity -> {
+                JobDto jobDto = new JobDto();
+                BeanUtils.copyProperties(jobEntity,jobDto);
+                jobDtos.add(jobDto);
+            });
+            return jobDtos;
+        }
+        return null;
+    }
+
+    /**
+     * 根据id删除
+     */
+    public boolean deleteById(Long id){
+        jobDao.deleteById(id);
+        return true;
+    }
 
 }

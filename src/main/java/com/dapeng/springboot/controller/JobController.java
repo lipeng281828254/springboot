@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @author lipeng
@@ -25,13 +26,30 @@ public class JobController {
     private JobSerivce jobSerivce;
 
     @PostMapping("createJob.json")
-    public JobDto createJob(@Valid @RequestBody JobDto jobDto, HttpServletRequest request){
-       HttpSession session = request.getSession();
-       UserInfoDto createInfo = (UserInfoDto) session.getAttribute("userInfo");
-       jobDto.setCreateBy(createInfo.getId());
-       jobDto.setCreateName(createInfo.getUserName());
+    public JobDto createJob(@Valid @RequestBody JobDto jobDto, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        UserInfoDto createInfo = (UserInfoDto) session.getAttribute("userInfo");
+        jobDto.setCreateBy(createInfo.getId());
+        jobDto.setCreateName(createInfo.getUserName());
 //        jobDto.setCreateBy(11l);
 //        jobDto.setCreateName("小明");
-       return jobSerivce.saveJob(jobDto);
+        return jobSerivce.saveJob(jobDto);
+    }
+
+    //接触关联关系
+    @GetMapping("deleteRelation.json")
+    public boolean deleteRelation(Long id) {
+        return jobSerivce.deleteRelation(id);
+    }
+
+    @GetMapping("listJobByDemindAndType.json")
+    public List<JobDto> listJobs(Long demindId, String type) {
+        return jobSerivce.listJobByDemindAndType(demindId, type);
+    }
+
+    //根据id删除
+    @PostMapping("deleteById.json")
+    public boolean deleteById(Long id) {
+        return jobSerivce.deleteById(id);
     }
 }
