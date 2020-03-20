@@ -179,7 +179,7 @@ public class UserInfoService {
     public UserInfoDto getByLoginName(String loginName) {
         UserInfoEntity entity = userInfoDao.getByLoginName(loginName);
         if (entity == null) {
-            throw new RuntimeException("用户不存在");
+            return null;
         }
         UserInfoDto userInfoDto = new UserInfoDto();
         BeanUtils.copyProperties(entity, userInfoDto);

@@ -99,10 +99,10 @@ public class ProjectController {
     //回复加入团队后加入项目
     @GetMapping("replayToProject.json")
     public Boolean repalyToProject(ReplyDto replyDto,HttpServletRequest request){
-//        HttpSession session = request.getSession();
-//        UserInfoDto userInfo = (UserInfoDto) session.getAttribute("userInfo");
+        HttpSession session = request.getSession();
+        UserInfoDto userInfo = (UserInfoDto) session.getAttribute("userInfo");
 //        //创建人是userInfo
-        UserInfoDto userInfo = userInfoService.getByLoginName("281828254@qq.com");
+//        UserInfoDto userInfo = userInfoService.getByLoginName("281828254@qq.com");
         replyDto.setUserId(userInfo.getId());
         return projectService.replyToProject(replyDto,userInfo);
     }
