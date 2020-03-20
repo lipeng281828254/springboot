@@ -52,4 +52,11 @@ public class JobController {
     public boolean deleteById(Long id) {
         return jobSerivce.deleteById(id);
     }
+
+    //更新jOb信息，状态变化生成消息；todo  附件上传 通知
+    @PostMapping("updateJob.json")
+    public boolean updateJob(JobDto jobDto){
+        return jobSerivce.updateJob(jobDto);
+    }
+
 }

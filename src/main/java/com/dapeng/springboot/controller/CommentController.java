@@ -26,6 +26,7 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
+    //添加评论时，生成两条消息 todo
     @PostMapping("addComment.json")
     public boolean addComment(@Valid @RequestBody CommentDto commentDto, HttpServletRequest request){
         HttpSession session = request.getSession();

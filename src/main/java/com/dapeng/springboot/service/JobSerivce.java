@@ -87,4 +87,11 @@ public class JobSerivce {
         return true;
     }
 
+    //更新job内容，注意生成消息的变化
+    public boolean updateJob(JobDto jobDto) {
+        log.info("更新job入参--->>>{}",jobDto);
+        //附件上传生成消息
+        //状态变化生成消息
+        return false;
+    }
 }
