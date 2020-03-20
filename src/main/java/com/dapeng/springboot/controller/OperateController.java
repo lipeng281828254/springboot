@@ -4,13 +4,12 @@ import com.dapeng.springboot.dto.OperateInfoDto;
 import com.dapeng.springboot.dto.UserInfoDto;
 import com.dapeng.springboot.service.OperateService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @author lipeng
@@ -26,9 +25,15 @@ public class OperateController {
     private OperateService operateService;
 
     @PostMapping("addChangeLog.json")
-    public boolean addChangeLog(OperateInfoDto dto, HttpServletRequest request) {
+    public boolean addChangeLog(@Valid @RequestBody OperateInfoDto dto, HttpServletRequest request) {
         HttpSession session = request.getSession();
         UserInfoDto userInfoDto = (UserInfoDto) session.getAttribute("userInfo");
         return operateService.addChangeLog(dto, userInfoDto);
+    }
+
+    //查询变更记录
+    @GetMapping("listChangeLog.json")
+    public List<OperateInfoDto> list(Long jobId) {
+        return operateService.listLogs(jobId);
     }
 }
