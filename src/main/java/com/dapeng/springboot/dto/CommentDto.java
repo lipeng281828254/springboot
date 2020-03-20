@@ -2,6 +2,8 @@ package com.dapeng.springboot.dto;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -18,6 +20,7 @@ public class CommentDto implements Serializable {
     private Long id;
 
     //jobid
+    @NotNull(message = "评论工作id不能为空")
     private Long jobId;
 
     //评论人
@@ -27,6 +30,7 @@ public class CommentDto implements Serializable {
     private String commentName;
 
     //评论内容
+    @NotBlank(message = "评论内容不能为空")
     private String commentContent;
 
 
