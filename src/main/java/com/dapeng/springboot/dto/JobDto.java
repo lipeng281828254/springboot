@@ -1,6 +1,7 @@
 package com.dapeng.springboot.dto;
 
 import lombok.Data;
+import org.springframework.util.StringUtils;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -110,4 +111,10 @@ public class JobDto implements Serializable {
     private String fileId;
     //文件名称
     private String fileName;
+
+    public void check(){
+        if (!StringUtils.isEmpty(fileId) && StringUtils.isEmpty(fileName)){
+            throw new RuntimeException("文件名称不能为空");
+        }
+    }
 }

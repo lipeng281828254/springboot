@@ -25,7 +25,6 @@ public class NoticeDto implements Serializable {
     private String projectName;
 
     //工作id
-    @NotNull(message = "job类型id不能为空")
     private Long jobId;
 
     //10-迭代；20-需求；30-任务；40-缺陷
@@ -34,11 +33,10 @@ public class NoticeDto implements Serializable {
     //标题名称
     private String jobTitle;
 
-    //事件类型：邀请通知；附件通知；
+    //事件类型：邀请通知；附件通知；属性变化通知
     private String action;
 
     //通知内容
-    @NotBlank(message = "通知消息内容不能为空")
     private String content;
 
     //处理人id
