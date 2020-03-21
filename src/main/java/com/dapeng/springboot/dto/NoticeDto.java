@@ -57,8 +57,8 @@ public class NoticeDto implements Serializable {
     //团队名称
     private String teamName;
 
-    //已读，未独
-    private String status;
+    //已读，未读
+    private String status ="未读";
 
     //创建时间
     private Date createTime;

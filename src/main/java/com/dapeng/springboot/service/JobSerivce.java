@@ -135,7 +135,7 @@ public class JobSerivce {
         return false;
     }
 
-    //生成附件上传通知消息
+    //生成通知消息
     private void createNotice(JobEntity entity, JobDto jobDto, UserInfoDto userInfoDto,String action,String content) {
         //创建人user 生成两条，通知Job创建人和处理者--消息的处理人
         Long createBy = userInfoDto.getId();
@@ -153,15 +153,34 @@ public class JobSerivce {
         noticeDto.setCreateName(userInfoDto.getUserName());
         noticeDto.setCreateTime(new Date());
         noticeDto.setContent(content);
-        //处理人，Job创建者
-        noticeDto.setHandlerId(entity.getCreateBy());
-        noticeDto.setHandlerName(entity.getCreateName());
         noticeDto.setStatus("未读");
-        //只需要看到
-        noticeService.createNotice(noticeDto);
-        //创建处理者接收消息
-        noticeDto.setHandlerId(entity.getHandlerId());
-        noticeDto.setHandlerName(entity.getHandlerName());
-        noticeService.createNotice(noticeDto);
+        //处理人，Job创建者
+        if (noticeDto.getCreateBy() != jobDto.getCreateBy()){
+            noticeDto.setHandlerId(entity.getCreateBy());
+            noticeDto.setHandlerName(entity.getCreateName());
+            //只需要看到
+            noticeService.createNotice(noticeDto);
+        }
+        if (noticeDto.getCreateBy() != jobDto.getHandlerId()){
+            //创建处理者接收消息
+            noticeDto.setHandlerId(entity.getHandlerId());
+            noticeDto.setHandlerName(entity.getHandlerName());
+            noticeService.createNotice(noticeDto);
+        }
+    }
+
+    /**
+     * 根据id查询详情
+     * * @param id
+     * @return
+     */
+    public JobDto getById(Long id){
+        JobEntity entity = jobDao.getOne(id);
+        if (entity == null){
+            return null;
+        }
+        JobDto jobDto = new JobDto();
+        BeanUtils.copyProperties(entity,jobDto);
+        return jobDto;
     }
 }

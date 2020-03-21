@@ -53,7 +53,7 @@ public class JobController {
         return jobSerivce.deleteById(id);
     }
 
-    //更新jOb信息，状态变化生成消息；todo  附件上传 通知
+    //更新jOb信息，状态变化生成消息
     @PostMapping("updateJob.json")
     public boolean updateJob(JobDto jobDto,HttpServletRequest request){
         HttpSession session = request.getSession();

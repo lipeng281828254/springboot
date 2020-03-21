@@ -4,10 +4,7 @@ import com.dapeng.springboot.dto.CommentDto;
 import com.dapeng.springboot.dto.UserInfoDto;
 import com.dapeng.springboot.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -26,11 +23,14 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
-    //添加评论时，生成两条消息 todo
-    @PostMapping("addComment.json")
-    public boolean addComment(@Valid @RequestBody CommentDto commentDto, HttpServletRequest request){
+    //添加评论时，生成两条消息
+    @PostMapping("addComment.json")//@RequestBody
+    public boolean addComment(@Valid @RequestBody CommentDto commentDto, HttpServletRequest request) {
         HttpSession session = request.getSession();
         UserInfoDto userInfoDto = (UserInfoDto) session.getAttribute("userInfo");//获取评论人
-        return commentService.addComment(commentDto,userInfoDto);
+//        UserInfoDto userInfoDto = new UserInfoDto();
+//        userInfoDto.setId(11l);
+//        userInfoDto.setUserName("小明");
+        return commentService.addComment(commentDto, userInfoDto);
     }
 }
