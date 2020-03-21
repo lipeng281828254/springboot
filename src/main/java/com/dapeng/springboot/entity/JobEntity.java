@@ -96,6 +96,9 @@ public class JobEntity implements Serializable {
     @Column(name = "descript",columnDefinition = "varchar(1000) comment '描述'")
     private String descript;
     //附件路径
-    @Column(name = "file_id",columnDefinition = "varchar(128) comment '附件路径'")
+    @Column(name = "file_id",columnDefinition = "varchar(256) comment '附件路径'")
     private String fileId;
+    //文件名称
+    @Column(name = "file_name",columnDefinition = "varchar(256) comment '文件名称'")
+    private String fileName;
 }

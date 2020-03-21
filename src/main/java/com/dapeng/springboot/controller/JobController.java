@@ -55,8 +55,10 @@ public class JobController {
 
     //更新jOb信息，状态变化生成消息；todo  附件上传 通知
     @PostMapping("updateJob.json")
-    public boolean updateJob(JobDto jobDto){
-        return jobSerivce.updateJob(jobDto);
+    public boolean updateJob(JobDto jobDto,HttpServletRequest request){
+        HttpSession session = request.getSession();
+        UserInfoDto userInfoDto = (UserInfoDto) session.getAttribute("userInfo");
+        return jobSerivce.updateJob(jobDto,userInfoDto);
     }
 
 }

@@ -2,6 +2,8 @@ package com.dapeng.springboot.dto;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -23,6 +25,7 @@ public class NoticeDto implements Serializable {
     private String projectName;
 
     //工作id
+    @NotNull(message = "job类型id不能为空")
     private Long jobId;
 
     //10-迭代；20-需求；30-任务；40-缺陷
@@ -35,6 +38,7 @@ public class NoticeDto implements Serializable {
     private String action;
 
     //通知内容
+    @NotBlank(message = "通知消息内容不能为空")
     private String content;
 
     //处理人id
@@ -46,7 +50,7 @@ public class NoticeDto implements Serializable {
     //创建人
     private Long createBy;
 
-    //通知详情内容
+    //
     private String createName;
 
     //团队id
@@ -55,7 +59,7 @@ public class NoticeDto implements Serializable {
     //团队名称
     private String teamName;
 
-    //已读，惟独
+    //已读，未独
     private String status;
 
     //创建时间

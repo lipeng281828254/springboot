@@ -1,6 +1,7 @@
 package com.dapeng.springboot.service;
 
 import com.dapeng.springboot.dto.JobDto;
+import com.dapeng.springboot.dto.NoticeDto;
 import com.dapeng.springboot.dto.ProjectInfoDto;
 import com.dapeng.springboot.dto.UserInfoDto;
 import com.dapeng.springboot.entity.JobEntity;
@@ -10,9 +11,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -87,11 +90,40 @@ public class JobSerivce {
         return true;
     }
 
+    @Transactional
     //更新job内容，注意生成消息的变化
-    public boolean updateJob(JobDto jobDto) {
+    public boolean updateJob(JobDto jobDto,UserInfoDto userInfoDto) {
         log.info("更新job入参--->>>{}",jobDto);
+        //更新基本信息
+        if (jobDto.getId() == null){
+            throw new RuntimeException("id不能为空");
+        }
+        JobEntity entity = jobDao.getOne(jobDto.getId());
+        BeanUtils.copyProperties(jobDto,entity);
+        jobDao.save(entity);
+        log.info("更新job完成");
+        log.info("创建消息通知信息");
         //附件上传生成消息
+        if (jobDto.getFileId() != null){
+            log.info("上传附件信息创建通知");
+
+        }
         //状态变化生成消息
         return false;
+    }
+
+    //生成附件上传通知消息
+    private void createNoticeFile(JobEntity entity,JobDto jobDto,UserInfoDto userInfoDto){
+        //创建人user 生成两条，通知Job创建人和处理者
+        Long createBy = userInfoDto.getId();
+        String createName = userInfoDto.getUserName();
+
+        NoticeDto noticeDto = new NoticeDto();
+        noticeDto.setProjectId(entity.getProjectId());
+        noticeDto.setJobTitle(entity.getTitle());
+        noticeDto.setCreateBy(userInfoDto.getId());
+        noticeDto.setCreateName(userInfoDto.getUserName());
+        noticeDto.setCreateTime(new Date());
+
     }
 }

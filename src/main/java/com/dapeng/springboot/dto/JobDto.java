@@ -108,4 +108,6 @@ public class JobDto implements Serializable {
 
     //附件路径
     private String fileId;
+    //文件名称
+    private String fileName;
 }
