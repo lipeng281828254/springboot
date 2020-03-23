@@ -37,7 +37,7 @@ public class OperateInfoEntity implements Serializable {
     @Column(name = "change_content_before", columnDefinition = "varchar(500) comment '变更前内容'")
     private String changeContentBefore;
 
-    @Column(name = "change_content_after", columnDefinition = "varchar(500) comment '变更前内容'")
+    @Column(name = "change_content_after", columnDefinition = "varchar(500) comment '变更后内容'")
     private String changeContentAfter;
 
     @Column(
