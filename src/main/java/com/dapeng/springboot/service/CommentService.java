@@ -1,10 +1,11 @@
 package com.dapeng.springboot.service;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.bean.copier.CopyOptions;
 import com.dapeng.springboot.dto.*;
 import com.dapeng.springboot.entity.CommentEntity;
 import com.dapeng.springboot.jpa.CommentDao;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,7 +43,8 @@ public class CommentService {
         commentDto.setCommentId(userInfoDto.getId());
         commentDto.setCommentName(userInfoDto.getUserName());
         CommentEntity entity = new CommentEntity();
-        BeanUtils.copyProperties(commentDto, entity);
+//        BeanUtils.copyProperties(commentDto, entity);
+        BeanUtil.copyProperties(commentDto,entity, CopyOptions.create().setIgnoreNullValue(true).setIgnoreError(true));
         commentDao.save(entity);
         commentDto.setId(entity.getId());
         log.info("新增评论结果--->>>{}", commentDto);

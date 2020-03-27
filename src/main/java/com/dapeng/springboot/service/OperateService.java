@@ -1,5 +1,7 @@
 package com.dapeng.springboot.service;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.bean.copier.CopyOptions;
 import com.dapeng.springboot.dto.OperateInfoDto;
 import com.dapeng.springboot.dto.UserInfoDto;
 import com.dapeng.springboot.entity.OperateInfoEntity;
@@ -35,7 +37,8 @@ public class OperateService {
     public boolean addChangeLog(OperateInfoDto operateInfoDto, UserInfoDto userInfoDto) {
         log.info("添加变更记录入参：---{}", operateInfoDto);
         OperateInfoEntity entity = new OperateInfoEntity();
-        BeanUtils.copyProperties(operateInfoDto, entity);
+//        BeanUtils.copyProperties(operateInfoDto, entity);
+        BeanUtil.copyProperties(operateInfoDto,entity, CopyOptions.create().setIgnoreNullValue(true).setIgnoreError(true));
         entity.setOperatorId(userInfoDto.getId());
         entity.setOperatorName(userInfoDto.getUserName());
         operateDao.save(entity);

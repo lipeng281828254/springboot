@@ -115,6 +115,13 @@
             <version>1.7.25</version>
         </dependency>
 
+<!--        使用复制工具类-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>4.1.14</version>
+        </dependency>
+
     </dependencies>
 
     <build>

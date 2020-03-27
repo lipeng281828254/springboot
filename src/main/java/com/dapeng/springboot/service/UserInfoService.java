@@ -1,5 +1,7 @@
 package com.dapeng.springboot.service;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.bean.copier.CopyOptions;
 import com.dapeng.springboot.dto.*;
 import com.dapeng.springboot.entity.UserInfoEntity;
 import com.dapeng.springboot.jpa.UserInfoDao;
@@ -9,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -98,7 +99,8 @@ public class UserInfoService {
             throw new RuntimeException("没有查询到用户信息");
         }
         log.info("用户信息：{}", entity);
-        BeanUtils.copyProperties(dto, entity);
+//        BeanUtils.copyProperties(dto, entity);
+        BeanUtil.copyProperties(dto,entity, CopyOptions.create().setIgnoreNullValue(true).setIgnoreError(true));
         UserInfoEntity result = userInfoDao.save(entity);
         log.info("更新用户信息结束,{}", result);
         BeanUtils.copyProperties(entity, dto);
@@ -127,7 +129,8 @@ public class UserInfoService {
         if (entity == null) {
             throw new RuntimeException("未查询到用户信息");
         }
-        BeanUtils.copyProperties(upLoginDto, entity);
+//        BeanUtils.copyProperties(upLoginDto, entity);
+        BeanUtil.copyProperties(upLoginDto,entity, CopyOptions.create().setIgnoreNullValue(true).setIgnoreError(true));
         entity.setEmail(upLoginDto.getLoginName());
         userInfoDao.save(entity);
         BeanUtils.copyProperties(entity,upLoginDto);
@@ -147,7 +150,8 @@ public class UserInfoService {
             throw new RuntimeException("密码和确认密码不一致");
         }
         UserInfoEntity entity = userInfoDao.getOne(dto.getId());
-        BeanUtils.copyProperties(dto, entity);
+//        BeanUtils.copyProperties(dto, entity);
+        BeanUtil.copyProperties(dto,entity, CopyOptions.create().setIgnoreNullValue(true).setIgnoreError(true));
         entity.setPassword(EncryptionUtil.getEncryp(dto.getPassword()));//加密
         userInfoDao.save(entity);
     }

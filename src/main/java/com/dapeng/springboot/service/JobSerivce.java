@@ -1,13 +1,14 @@
 package com.dapeng.springboot.service;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.bean.copier.CopyOptions;
 import com.dapeng.springboot.dto.JobDto;
 import com.dapeng.springboot.dto.NoticeDto;
 import com.dapeng.springboot.dto.ProjectInfoDto;
 import com.dapeng.springboot.dto.UserInfoDto;
 import com.dapeng.springboot.entity.JobEntity;
 import com.dapeng.springboot.jpa.JobDao;
-import com.dapeng.springboot.jpa.NoticeDao;
-import com.dapeng.springboot.jpa.ProjectDao;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -129,7 +130,9 @@ public class JobSerivce {
             createNotice(entity,jobDto,userInfoDto,"属性变化通知",content);
         }
         log.info("创建消息通知信息结束---");
-        BeanUtils.copyProperties(jobDto, entity);
+//        BeanUtils.copyProperties(jobDto, entity);
+        BeanUtil.copyProperties(jobDto,entity, CopyOptions.create().setIgnoreNullValue(true).setIgnoreError(true));
+        log.info("复制后结果：--->>>{}",entity);
         jobDao.save(entity);
         log.info("更新job完成---->>>");
         return false;
@@ -155,13 +158,13 @@ public class JobSerivce {
         noticeDto.setContent(content);
         noticeDto.setStatus("未读");
         //处理人，Job创建者
-        if (noticeDto.getCreateBy() != jobDto.getCreateBy()){
+        if (!noticeDto.getCreateBy().equals(jobDto.getCreateBy())){
             noticeDto.setHandlerId(entity.getCreateBy());
             noticeDto.setHandlerName(entity.getCreateName());
             //只需要看到
             noticeService.createNotice(noticeDto);
         }
-        if (noticeDto.getCreateBy() != jobDto.getHandlerId()){
+        if (!noticeDto.getCreateBy().equals(jobDto.getHandlerId())){
             //创建处理者接收消息
             noticeDto.setHandlerId(entity.getHandlerId());
             noticeDto.setHandlerName(entity.getHandlerName());
