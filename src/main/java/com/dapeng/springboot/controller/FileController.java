@@ -2,6 +2,7 @@ package com.dapeng.springboot.controller;
 
 
 import cn.hutool.system.UserInfo;
+import com.dapeng.springboot.dto.FileDto;
 import com.dapeng.springboot.dto.JobDto;
 import com.dapeng.springboot.dto.UserInfoDto;
 import com.dapeng.springboot.service.JobSerivce;
@@ -35,9 +36,10 @@ public class FileController {
      * @return
      */
     @PostMapping("upload.json")
-    public Boolean upload(@RequestParam("file") MultipartFile file, @RequestParam("jobId")Long jobId, HttpServletRequest request) throws IOException {
+    public FileDto upload(@RequestParam("file") MultipartFile file, @RequestParam("jobId") Long jobId, HttpServletRequest request) throws IOException {
 
-        log.info("jobId={}",jobId);
+        FileDto fileDto = new FileDto();
+        log.info("jobId={}", jobId);
         HttpSession session = request.getSession();
         UserInfoDto userInfoDto = (UserInfoDto) session.getAttribute("userInfo");
         OutputStream out = null;
@@ -61,7 +63,9 @@ public class FileController {
             jobDto.setId(jobId);
             jobDto.setFileId(fileId);
             jobDto.setFileName(fileName);
-            jobSerivce.updateJob(jobDto,userInfoDto);
+            fileDto.setFileId(fileId);
+            fileDto.setFileName(fileName);
+            jobSerivce.updateJob(jobDto, userInfoDto);
             fileObj = new File(pfile, fileName);
             out = new FileOutputStream(fileObj);
             out.write(bytes);
@@ -76,9 +80,8 @@ public class FileController {
                 out.close();
             }
         }
-        return true;
+        return fileDto;
     }
-
 
 
 }
