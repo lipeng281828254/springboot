@@ -38,7 +38,7 @@ public class NoticeService {
         UserInfoDto user = (UserInfoDto) session.getAttribute("userInfo");
         List<NoticeEntity> entities = noticeDao.findByhandlerId(user.getId());
         if (entities == null || entities.size() == 0) {
-            return null;
+            return new ArrayList<>();
         }
         List<NoticeDto> result = new ArrayList<>();
         entities.forEach(noticeEntity -> {
