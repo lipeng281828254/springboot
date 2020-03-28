@@ -65,4 +65,10 @@ public class NoticeService {
         BeanUtils.copyProperties(entity,dto);
         return dto;
     }
+
+    //修改所有的状态为已读
+    public Boolean chageAllStatus(Long id) {
+        noticeDao.updateByHandlerId(id);
+        return Boolean.TRUE;
+    }
 }

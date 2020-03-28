@@ -36,7 +36,7 @@ public class JobController {
         return jobSerivce.saveJob(jobDto);
     }
 
-    //接触关联关系
+    //解除关联关系
     @GetMapping("deleteRelation.json")
     public boolean deleteRelation(Long id) {
         return jobSerivce.deleteRelation(id);
@@ -55,26 +55,34 @@ public class JobController {
 
     //更新jOb信息，状态变化生成消息
     @PostMapping("updateJob.json")
-    public boolean updateJob(JobDto jobDto,HttpServletRequest request){
+    public boolean updateJob(JobDto jobDto, HttpServletRequest request) {
         HttpSession session = request.getSession();
         UserInfoDto userInfoDto = (UserInfoDto) session.getAttribute("userInfo");
-        return jobSerivce.updateJob(jobDto,userInfoDto);
+        return jobSerivce.updateJob(jobDto, userInfoDto);
     }
 
     @GetMapping("getById.json")
-    public JobDto getById(Long id){
+    public JobDto getById(Long id) {
         return jobSerivce.getById(id);
     }
 
     @GetMapping("queryNeedToDealt.json")
-    public List<JobDto> queryNeedToDetail(HttpServletRequest request){
+    public List<JobDto> queryNeedToDetail(Long projectId,String type,HttpServletRequest request) {
         HttpSession session = request.getSession();
         UserInfoDto userInfoDto = (UserInfoDto) session.getAttribute("userInfo");
-        return jobSerivce.queryByHandleId(userInfoDto.getId());
+        return jobSerivce.queryByHandleId(projectId,type,userInfoDto.getId());
+    }
+
+    @GetMapping("queryMycreate.json")
+    public List<JobDto> queryMycreate(Long projectId,String type,HttpServletRequest request){
+        HttpSession session = request.getSession();
+        UserInfoDto userInfoDto = (UserInfoDto) session.getAttribute("userInfo");
+        return jobSerivce.queryMyCreate(projectId,type,userInfoDto.getId());
     }
 
     @GetMapping("queryJob.json")
-    public List<JobDto> queryByContions(JobDto jobDto){
+    public List<JobDto> queryByContions(JobDto jobDto) {
         return jobSerivce.queryJobByConditons(jobDto);
     }
+
 }

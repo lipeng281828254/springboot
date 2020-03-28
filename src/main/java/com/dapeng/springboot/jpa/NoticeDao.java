@@ -23,4 +23,9 @@ public interface NoticeDao extends JpaRepository<NoticeEntity,Long>, JpaSpecific
     @Query(value = "update notice_info set status='已读' where id = ?1 ",nativeQuery = true)
     @Modifying
     int changeToRead(Long id);
+
+    @Transactional
+    @Query(value = "update notice_info set status='已读' where handler_id = ?1 ",nativeQuery = true)
+    @Modifying
+    void updateByHandlerId(Long handlerId);
 }

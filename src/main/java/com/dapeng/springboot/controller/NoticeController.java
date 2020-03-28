@@ -51,4 +51,11 @@ public class NoticeController {
 //        noticeDto.setCreateTime(new Date());
 //        noticeService.createNotice(noticeDto);
 //    }
+
+    @PostMapping("chageAllStatus.json")
+    public Boolean chageAllStatus(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        UserInfoDto userInfoDto = (UserInfoDto) session.getAttribute("userInfo");
+        return noticeService.chageAllStatus(userInfoDto.getId());
+    }
 }

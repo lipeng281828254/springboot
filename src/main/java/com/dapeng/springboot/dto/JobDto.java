@@ -76,9 +76,9 @@ public class JobDto implements Serializable {
     private String projectName;
 
     /**
-     * 优先级：最高；高；普通；较低；低
+     * 优先级：1,最高；2,高；3,普通；4,较低；5,低
      */
-    private String priorityLevel;
+    private Integer priorityLevel;
 
     //创建人
     private Long createBy;

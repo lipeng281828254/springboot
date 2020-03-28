@@ -52,7 +52,7 @@ public class ProjectController {
     }
 
     /**
-     * 查询成员所在项目列表（当前登录者）
+     * 查询成员所在项目列表（当前登录者）  所在项目
      * @return
      */
     @GetMapping("lisetProject.json")

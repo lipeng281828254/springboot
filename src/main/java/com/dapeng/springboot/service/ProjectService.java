@@ -68,14 +68,16 @@ public class ProjectService {
      * @return
      */
     public List<ProjectInfoDto> listProjectByUserId(Long userId) {
-        List<ProjectEntity> entities = projectDao.queryByUserId(userId);
-        if (entities == null || entities.size() < 1) {
-            return null;
+        //查询用户所在项目
+        List<ProjectUserReltiveEntity> reltiveEntities = projectUserDao.findByUserId(userId);
+        if (reltiveEntities == null || reltiveEntities.size() < 1) {
+            return new ArrayList<>();
         }
         List<ProjectInfoDto> infoDtos = new ArrayList<>();
-        entities.forEach(projectEntity -> {
+        reltiveEntities.forEach(reltiveEntity -> {
+            ProjectEntity entity = projectDao.getOne(reltiveEntity.getProjectId());
             ProjectInfoDto infoDto = new ProjectInfoDto();
-            BeanUtils.copyProperties(projectEntity, infoDto);
+            BeanUtils.copyProperties(entity, infoDto);
             infoDtos.add(infoDto);
         });
         return infoDtos;
@@ -166,19 +168,19 @@ public class ProjectService {
         //没有在团队中，邀请加入团队，生成消息
         log.info("非团队成员邀请入项目");
         ProjectEntity entity = getProjectByProjectId(inviteProjectDto.getProjectId());
-        NoticeDto noticeDto = buildNoticeInfo(inviteProjectDto.getProjectId(),entity.getProjectName(),
-                inviteProjectDto.getUserId(),userInfo.getUserName(),createInfo.getTeamId(),createInfo.getTeamName(),
-                createInfo.getId(),createInfo.getUserName(),"invite",null);
+        NoticeDto noticeDto = buildNoticeInfo(inviteProjectDto.getProjectId(), entity.getProjectName(),
+                inviteProjectDto.getUserId(), userInfo.getUserName(), createInfo.getTeamId(), createInfo.getTeamName(),
+                createInfo.getId(), createInfo.getUserName(), "invite", null);
         noticeService.createNotice(noticeDto);
         return true;
     }
 
-    private ProjectEntity getProjectByProjectId(Long projectId){
+    private ProjectEntity getProjectByProjectId(Long projectId) {
         return projectDao.getOne(projectId);
     }
 
     //构建通知消息
-    private NoticeDto buildNoticeInfo(Long projectId, String projectName, Long handlerId, String handlerName, Long teamId, String teamName, Long createBy,String createName, String flag,String isOk) {
+    private NoticeDto buildNoticeInfo(Long projectId, String projectName, Long handlerId, String handlerName, Long teamId, String teamName, Long createBy, String createName, String flag, String isOk) {
         NoticeDto noticeDto = new NoticeDto();
         noticeDto.setProjectId(projectId);
         noticeDto.setProjectName(projectName);
@@ -203,7 +205,7 @@ public class ProjectService {
             if (!StringUtils.isEmpty(createName)) {
                 sb.append(createName);
             }
-            if (!"ok".equals(isOk)){
+            if (!"ok".equals(isOk)) {
                 sb.append("已拒绝加入");
             } else {
                 sb.append("已加入");
@@ -220,50 +222,50 @@ public class ProjectService {
     @Transactional
     public Boolean replyToProject(ReplyDto replyDto, UserInfoDto userInfo) {
         //判断是否加入
-        log.info("回复邀请项目通知入参，{}",replyDto);
+        log.info("回复邀请项目通知入参，{}", replyDto);
         NoticeDto noticeDto = getByNoticeId(replyDto.getNoticeId());
-        if (!"ok".equals(replyDto.getIsOk())){
+        if (!"ok".equals(replyDto.getIsOk())) {
             //生成拒绝的数据
             //未加入团队通知给发起人
-            NoticeDto replyNotice = buildNoticeInfo(noticeDto.getProjectId(),noticeDto.getProjectName(),
-                    noticeDto.getCreateBy(),noticeDto.getCreateName(), noticeDto.getTeamId(),noticeDto.getTeamName(),replyDto.getUserId(),userInfo.getUserName(),"reply","no");
+            NoticeDto replyNotice = buildNoticeInfo(noticeDto.getProjectId(), noticeDto.getProjectName(),
+                    noticeDto.getCreateBy(), noticeDto.getCreateName(), noticeDto.getTeamId(), noticeDto.getTeamName(), replyDto.getUserId(), userInfo.getUserName(), "reply", "no");
             noticeService.createNotice(replyNotice);
             return false;
         }
         //同意加入
-        if (userInfo.getTeamId() != null){
+        if (userInfo.getTeamId() != null) {
             throw new RuntimeException("成员已在其他团队里");
         }
         //查询通知详情 加入团队
-        userInfoDao.addTeamId(noticeDto.getTeamId(),noticeDto.getTeamName(),replyDto.getUserId());
+        userInfoDao.addTeamId(noticeDto.getTeamId(), noticeDto.getTeamName(), replyDto.getUserId());
         //加入项目
         ProjectUserReltiveEntity reltiveEntity = new ProjectUserReltiveEntity();
         reltiveEntity.setProjectId(noticeDto.getProjectId());
         reltiveEntity.setUserId(userInfo.getId());
         reltiveEntity.setUserName(userInfo.getUserName());
         reltiveEntity.setProjectRole("编辑者");
-        log.info("entity={}",reltiveEntity);
+        log.info("entity={}", reltiveEntity);
         projectUserDao.save(reltiveEntity);
         //加入团队通知给发起人
-        NoticeDto replyNotice = buildNoticeInfo(noticeDto.getProjectId(),noticeDto.getProjectName(),
-                noticeDto.getCreateBy(),noticeDto.getCreateName(), noticeDto.getTeamId(),noticeDto.getTeamName(),replyDto.getUserId(),userInfo.getUserName(),"reply","ok");
+        NoticeDto replyNotice = buildNoticeInfo(noticeDto.getProjectId(), noticeDto.getProjectName(),
+                noticeDto.getCreateBy(), noticeDto.getCreateName(), noticeDto.getTeamId(), noticeDto.getTeamName(), replyDto.getUserId(), userInfo.getUserName(), "reply", "ok");
         noticeService.createNotice(replyNotice);
         log.info("回复邀请通知结束");
         return true;
     }
 
-    private NoticeDto getByNoticeId(Long noticeId){
+    private NoticeDto getByNoticeId(Long noticeId) {
         return noticeService.getById(noticeId);
     }
 
     //根据id查询
     public ProjectInfoDto findById(Long projectId) {
         ProjectEntity entity = projectDao.getOne(projectId);
-        if (entity == null){
-           throw new RuntimeException("未查询到项目");
+        if (entity == null) {
+            throw new RuntimeException("未查询到项目");
         }
         ProjectInfoDto projectInfoDto = new ProjectInfoDto();
-        BeanUtils.copyProperties(entity,projectInfoDto);
+        BeanUtils.copyProperties(entity, projectInfoDto);
         return projectInfoDto;
     }
 }

@@ -195,10 +195,10 @@ public class JobSerivce {
      * @param handlerId
      * @return
      */
-    public List<JobDto> queryByHandleId(Long handlerId) {
-        List<JobEntity> entits = jobDao.findByHandlerId(handlerId);
+    public List<JobDto> queryByHandleId(Long projectId,String type,Long handlerId) {
+        List<JobEntity> entits = jobDao.findByProjectIdAndTypeAndHandlerId(projectId,type,handlerId);
         if (entits == null || entits.size() < 1) {
-            return null;
+            return new ArrayList<>();
         }
         List<JobDto> jobDtos = new ArrayList<>();
         entits.forEach(jobEntity -> {
@@ -228,6 +228,21 @@ public class JobSerivce {
             JobDto jobDto1 = new JobDto();
             BeanUtils.copyProperties(jobEntity,jobDto1);
             jobDtos.add(jobDto1);
+        });
+        return jobDtos;
+    }
+
+
+    public List<JobDto> queryMyCreate(Long projectId,String type,Long createBy) {
+        List<JobEntity> entits = jobDao.findByProjectIdAndTypeAndCreateBy(projectId,type,createBy);
+        if (entits == null || entits.size() < 1) {
+            return new ArrayList<>();
+        }
+        List<JobDto> jobDtos = new ArrayList<>();
+        entits.forEach(jobEntity -> {
+            JobDto jobDto = new JobDto();
+            BeanUtils.copyProperties(jobEntity, jobDto);
+            jobDtos.add(jobDto);
         });
         return jobDtos;
     }
