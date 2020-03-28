@@ -12,6 +12,7 @@ import com.dapeng.springboot.jpa.JobDao;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -111,35 +112,35 @@ public class JobSerivce {
         if (!StringUtils.isEmpty(jobDto.getFileId())) {
             log.info("上传附件信息创建通知");
             String content = "用户".concat(name).concat("上传了文件").concat(jobDto.getFileName());
-            createNotice(entity,jobDto,userInfoDto,"上传附件通知",content);
+            createNotice(entity, jobDto, userInfoDto, "上传附件通知", content);
         }
         //状态变化生成消息
-        if (!StringUtils.isEmpty(jobDto.getStatus())){
+        if (!StringUtils.isEmpty(jobDto.getStatus())) {
             log.info("修改状态信息创建通知");
             String content = "用户".concat(name).concat("将属性'状态'修改为").concat(jobDto.getStatus());
-            createNotice(entity,jobDto,userInfoDto,"上传附件通知",content);
+            createNotice(entity, jobDto, userInfoDto, "上传附件通知", content);
         }
         //修改处理人
-        if (!StringUtils.isEmpty(jobDto.getHandlerId())){
+        if (!StringUtils.isEmpty(jobDto.getHandlerId())) {
             log.info("修改处理人信息创建通知");
             UserInfoDto dto = userInfoService.getById(jobDto.getHandlerId());
             jobDto.setHandlerName(dto.getUserName());
             entity.setHandlerId(jobDto.getHandlerId());
             entity.setHandlerName(jobDto.getHandlerName());
             String content = "用户".concat(name).concat("将属性'处理人'修改为").concat(jobDto.getHandlerName());
-            createNotice(entity,jobDto,userInfoDto,"属性变化通知",content);
+            createNotice(entity, jobDto, userInfoDto, "属性变化通知", content);
         }
         log.info("创建消息通知信息结束---");
 //        BeanUtils.copyProperties(jobDto, entity);
-        BeanUtil.copyProperties(jobDto,entity, CopyOptions.create().setIgnoreNullValue(true).setIgnoreError(true));
-        log.info("复制后结果：--->>>{}",entity);
+        BeanUtil.copyProperties(jobDto, entity, CopyOptions.create().setIgnoreNullValue(true).setIgnoreError(true));
+        log.info("复制后结果：--->>>{}", entity);
         jobDao.save(entity);
         log.info("更新job完成---->>>");
         return false;
     }
 
     //生成通知消息
-    private void createNotice(JobEntity entity, JobDto jobDto, UserInfoDto userInfoDto,String action,String content) {
+    private void createNotice(JobEntity entity, JobDto jobDto, UserInfoDto userInfoDto, String action, String content) {
         //创建人user 生成两条，通知Job创建人和处理者--消息的处理人
         Long createBy = userInfoDto.getId();
         String createName = userInfoDto.getUserName();
@@ -149,8 +150,8 @@ public class JobSerivce {
         noticeDto.setCreateName(createName);
         noticeDto.setProjectId(entity.getProjectId());
         noticeDto.setProjectName(projectDto.getProjectName());
-        noticeDto.setJobTitle(StringUtils.isEmpty(jobDto.getTitle())?entity.getTitle():jobDto.getTitle());
-        noticeDto.setJobType(StringUtils.isEmpty(jobDto.getTitle())?entity.getType():jobDto.getType());
+        noticeDto.setJobTitle(StringUtils.isEmpty(jobDto.getTitle()) ? entity.getTitle() : jobDto.getTitle());
+        noticeDto.setJobType(StringUtils.isEmpty(jobDto.getTitle()) ? entity.getType() : jobDto.getType());
         noticeDto.setAction(action);
         noticeDto.setCreateBy(userInfoDto.getId());
         noticeDto.setCreateName(userInfoDto.getUserName());
@@ -158,13 +159,13 @@ public class JobSerivce {
         noticeDto.setContent(content);
         noticeDto.setStatus("未读");
         //处理人，Job创建者
-        if (!noticeDto.getCreateBy().equals(jobDto.getCreateBy())){
+        if (!noticeDto.getCreateBy().equals(jobDto.getCreateBy())) {
             noticeDto.setHandlerId(entity.getCreateBy());
             noticeDto.setHandlerName(entity.getCreateName());
             //只需要看到
             noticeService.createNotice(noticeDto);
         }
-        if (!noticeDto.getCreateBy().equals(jobDto.getHandlerId())){
+        if (!noticeDto.getCreateBy().equals(jobDto.getHandlerId())) {
             //创建处理者接收消息
             noticeDto.setHandlerId(entity.getHandlerId());
             noticeDto.setHandlerName(entity.getHandlerName());
@@ -175,15 +176,59 @@ public class JobSerivce {
     /**
      * 根据id查询详情
      * * @param id
+     *
      * @return
      */
-    public JobDto getById(Long id){
+    public JobDto getById(Long id) {
         JobEntity entity = jobDao.getOne(id);
-        if (entity == null){
+        if (entity == null) {
             return null;
         }
         JobDto jobDto = new JobDto();
-        BeanUtils.copyProperties(entity,jobDto);
+        BeanUtils.copyProperties(entity, jobDto);
         return jobDto;
+    }
+
+    /**
+     * 查询代办列表
+     *
+     * @param handlerId
+     * @return
+     */
+    public List<JobDto> queryByHandleId(Long handlerId) {
+        List<JobEntity> entits = jobDao.findByHandlerId(handlerId);
+        if (entits == null || entits.size() < 1) {
+            return null;
+        }
+        List<JobDto> jobDtos = new ArrayList<>();
+        entits.forEach(jobEntity -> {
+            JobDto jobDto = new JobDto();
+            BeanUtils.copyProperties(jobEntity, jobDto);
+            jobDtos.add(jobDto);
+        });
+        return jobDtos;
+    }
+
+    /**
+     * 条件查询
+     *
+     * @param jobDto
+     * @return
+     */
+    public List<JobDto> queryJobByConditons(JobDto jobDto) {
+        JobEntity entity = new JobEntity();
+        BeanUtils.copyProperties(jobDto, entity);
+        Example<JobEntity> example1 = Example.of(entity);
+        List<JobEntity> entities = jobDao.findAll(example1);
+        if (entities == null || entities.size() < 1) {
+            return null;
+        }
+        List<JobDto> jobDtos = new ArrayList<>();
+        entities.forEach(jobEntity -> {
+            JobDto jobDto1 = new JobDto();
+            BeanUtils.copyProperties(jobEntity,jobDto1);
+            jobDtos.add(jobDto1);
+        });
+        return jobDtos;
     }
 }

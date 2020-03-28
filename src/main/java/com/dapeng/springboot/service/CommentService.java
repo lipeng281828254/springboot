@@ -6,13 +6,16 @@ import com.dapeng.springboot.dto.*;
 import com.dapeng.springboot.entity.CommentEntity;
 import com.dapeng.springboot.jpa.CommentDao;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author lipeng
@@ -44,7 +47,7 @@ public class CommentService {
         commentDto.setCommentName(userInfoDto.getUserName());
         CommentEntity entity = new CommentEntity();
 //        BeanUtils.copyProperties(commentDto, entity);
-        BeanUtil.copyProperties(commentDto,entity, CopyOptions.create().setIgnoreNullValue(true).setIgnoreError(true));
+        BeanUtil.copyProperties(commentDto, entity, CopyOptions.create().setIgnoreNullValue(true).setIgnoreError(true));
         commentDao.save(entity);
         commentDto.setId(entity.getId());
         log.info("新增评论结果--->>>{}", commentDto);
@@ -88,5 +91,25 @@ public class CommentService {
             noticeDto.setHandlerName(jobDto.getHandlerName());
             noticeService.createNotice(noticeDto);
         }
+    }
+
+    /**
+     * 根据jobId查询
+     *
+     * @param jobId
+     * @return
+     */
+    public List<CommentDto> findByJoBId(Long jobId) {
+        List<CommentEntity> entities = commentDao.findByJobId(jobId);
+        if (entities == null || entities.size() < 1) {
+            return null;
+        }
+        List<CommentDto> commentDtos = new ArrayList<>();
+        entities.forEach(commentEntity -> {
+            CommentDto commentDto = new CommentDto();
+            BeanUtils.copyProperties(commentEntity,commentDto);
+            commentDtos.add(commentDto);
+        });
+        return commentDtos;
     }
 }

@@ -15,7 +15,6 @@ import java.io.Serializable;
 @Data
 public class UpdatePassword implements Serializable {
 
-    @NotNull(message = "用户id不能为空")
     private Long id;
 
     @NotBlank(message = "新密码不能为空")

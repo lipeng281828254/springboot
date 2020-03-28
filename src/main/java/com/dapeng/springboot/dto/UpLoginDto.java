@@ -16,7 +16,7 @@ import java.io.Serializable;
 @Data
 public class UpLoginDto implements Serializable {
 
-    @NotNull(message = "用户id不能为空")
+
     private Long id;
 
     //登录名 必须是邮箱
@@ -26,7 +26,6 @@ public class UpLoginDto implements Serializable {
 
     //验证码
     private String valiCode;
-
 
 
 }

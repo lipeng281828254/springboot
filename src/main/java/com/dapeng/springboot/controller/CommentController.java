@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @author lipeng
@@ -32,5 +33,10 @@ public class CommentController {
 //        userInfoDto.setId(11l);
 //        userInfoDto.setUserName("小明");
         return commentService.addComment(commentDto, userInfoDto);
+    }
+
+    @GetMapping("getByJobId.json")
+    public List<CommentDto> queryByJobId(Long jobId){
+        return commentService.findByJoBId(jobId);
     }
 }

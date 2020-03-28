@@ -14,7 +14,6 @@ import java.io.Serializable;
 @Data
 public class UpdateUserInfoDto implements Serializable {
 
-    @NotNull(message = "用户id不能为空")
     private Long id;
 
     private String userName;

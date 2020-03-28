@@ -61,4 +61,20 @@ public class JobController {
         return jobSerivce.updateJob(jobDto,userInfoDto);
     }
 
+    @GetMapping("getById.json")
+    public JobDto getById(Long id){
+        return jobSerivce.getById(id);
+    }
+
+    @GetMapping("queryNeedToDealt.json")
+    public List<JobDto> queryNeedToDetail(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        UserInfoDto userInfoDto = (UserInfoDto) session.getAttribute("userInfo");
+        return jobSerivce.queryByHandleId(userInfoDto.getId());
+    }
+
+    @GetMapping("queryJob.json")
+    public List<JobDto> queryByContions(JobDto jobDto){
+        return jobSerivce.queryJobByConditons(jobDto);
+    }
 }

@@ -23,7 +23,7 @@ public class SessionFilter implements Filter {
     String NO_LOGIN = "403";//未登录
 
     //不需要登录就可以访问的路径(比如:注册登录等)"/api/file/upload.json","/","/api/comment/addComment.json"
-    String[] includeUrls = new String[]{"/api/userInfo/addUserInfo.json", "/api/userInfo/login.json"};
+    String[] includeUrls = new String[]{"/api/userInfo/exit.json","/api/userInfo/addUserInfo.json", "/api/userInfo/login.json"};
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

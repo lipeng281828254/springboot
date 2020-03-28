@@ -62,6 +62,9 @@ public class UserInfoDto implements Serializable {
     //项目邀请人
     private String inviteName;
 
+    //职位
+    private String position;
+
 
 
     public void checkTeamName() {

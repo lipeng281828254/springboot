@@ -25,64 +25,73 @@ public class UserInfoController {
 
     /**
      * 添加用户
+     *
      * @param dto
      * @return
      */
     @PostMapping(value = "/addUserInfo.json")
-    public UserInfoDto addUserInfo(@Valid @RequestBody UserInfoDto dto){
+    public UserInfoDto addUserInfo(@Valid @RequestBody UserInfoDto dto) {
         return userInfoService.addUserInfo(dto);
     }
 
     @PostMapping("/updateUserInfo.json")
-    public void updateUserInfo(@Valid @RequestBody UpdateUserInfoDto dto,HttpServletRequest request){
+    public UserInfoDto updateUserInfo(@RequestBody UpdateUserInfoDto dto, HttpServletRequest request) {
         HttpSession session = request.getSession();
-        userInfoService.updateUserInfo(dto,session);
+        UserInfoDto userInfoDto = (UserInfoDto) session.getAttribute("userInfo");
+        dto.setId(userInfoDto.getId());
+        return userInfoService.updateUserInfo(dto, session);
     }
 
     @PostMapping("/updateLoginName.json")
-    public void updateLoginName(@Valid @RequestBody UpLoginDto dto,HttpServletRequest request){
+    public Boolean updateLoginName(@Valid @RequestBody UpLoginDto dto, HttpServletRequest request) {
         HttpSession session = request.getSession();
-        userInfoService.updateLoginName(dto,session);
+        UserInfoDto userInfoDto = (UserInfoDto) session.getAttribute("userInfo");
+        dto.setId(userInfoDto.getId());
+        return userInfoService.updateLoginName(dto, session);
     }
 
     @PostMapping("/checkPassword.json")
-    public void checkPassword(@Valid @RequestBody ChekcPasswordDto dto){
+    public void checkPassword(@Valid @RequestBody ChekcPasswordDto dto) {
         userInfoService.checkPassword(dto);
     }
 
     @PostMapping("/updatePassword.json")
-    public void updatePassword(@Valid @RequestBody UpdatePassword dto){
-        userInfoService.updatePassword(dto);
+    public Boolean updatePassword(@Valid @RequestBody UpdatePassword dto, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        UserInfoDto userInfoDto = (UserInfoDto) session.getAttribute("userInfo");
+        dto.setId(userInfoDto.getId());
+        return userInfoService.updatePassword(dto);
     }
 
     @PostMapping("/login.json")
-    public UserInfoDto login( @Valid @RequestBody LoginDto loginDto, HttpServletRequest request){
+    public UserInfoDto login(@Valid @RequestBody LoginDto loginDto, HttpServletRequest request) {
         HttpSession session = request.getSession();
-        return userInfoService.login(loginDto,session);
+        return userInfoService.login(loginDto, session);
     }
 
     @GetMapping("/getByLoginName.json")
-    public UserInfoDto getByLoginName(String loginName){
+    public UserInfoDto getByLoginName(String loginName) {
         return userInfoService.getByLoginName(loginName);
     }
+
     @GetMapping("/getById.json")
-    public UserInfoDto getById(Long id){
+    public UserInfoDto getById(Long id) {
         return userInfoService.getById(id);
     }
 
     @GetMapping("/getUserInfo.json")
     public UserInfoDto getUserInfo(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        if (session == null){
+        if (session == null) {
             throw new RuntimeException("请先登录");
         }
         return (UserInfoDto) session.getAttribute("userInfo");
     }
 
     @GetMapping("/exit.json")
-    public void tuichu(HttpServletRequest request, SessionStatus sessionStatus){
+    public void tuichu(HttpServletRequest request, SessionStatus sessionStatus) {
         HttpSession session = request.getSession();
-        if (session == null){
+        if (session == null) {
             return;
         }
         session.invalidate();

@@ -23,4 +23,6 @@ public interface JobDao extends JpaRepository<JobEntity,Long>, JpaSpecificationE
     int deleteRelation(Long id);
 
     List<JobEntity> findByDemandIdAndType(Long demandId,String type);
+
+    List<JobEntity> findByHandlerId(Long handlerId);
 }

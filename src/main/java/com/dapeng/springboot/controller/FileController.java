@@ -51,7 +51,7 @@ public class FileController {
             byte[] bytes = file.getBytes();
             String fileName = file.getOriginalFilename();//附件名称
             log.info("文件名称-->>{}", fileName);
-            String filePath = "files";
+            String filePath = "C:\\Users\\Public\\Documents\\files";
             File pfile = new File(filePath);//创建文件夹
             if (!pfile.exists() && !pfile.isDirectory()) {
                 log.info("目录不存在");
