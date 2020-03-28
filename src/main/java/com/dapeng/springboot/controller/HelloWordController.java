@@ -1,5 +1,6 @@
 package com.dapeng.springboot.controller;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * 〈功能〉：helloword的访问控制器
  * ==================================================
  */
+//@Controller
 @RestController
 public class HelloWordController {
 
@@ -21,5 +23,6 @@ public class HelloWordController {
     public String toIndex(){
         System.out.println("->>进入控制器");
         return "success";
+//        return "index";
     }
 }
