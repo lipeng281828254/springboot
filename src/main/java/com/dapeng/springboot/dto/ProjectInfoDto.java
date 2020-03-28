@@ -15,6 +15,7 @@ import java.util.Date;
 @Data
 public class ProjectInfoDto implements Serializable {
 
+    //项目id
     private Long id;
 
     //项目名称
@@ -27,11 +28,15 @@ public class ProjectInfoDto implements Serializable {
     //项目状态 未完成，已完成
     private String status;
 
+    //创建人
     private Long createBy;
 
+    //创建人姓名
     private String createName;
 
+    //创建时间
     private Date createTime;
 
+    //更新时间
     private Date updateTime;
 }

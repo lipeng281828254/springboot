@@ -56,8 +56,10 @@ public class ProjectController {
      * @return
      */
     @GetMapping("lisetProject.json")
-    public List<ProjectInfoDto> listProject(Long userId){
-        return projectService.listProjectByUserId(userId);
+    public List<ProjectInfoDto> listProject(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        UserInfoDto user = (UserInfoDto) session.getAttribute("userInfo");
+        return projectService.listProjectByUserId(user.getId());
     }
 
     /**
