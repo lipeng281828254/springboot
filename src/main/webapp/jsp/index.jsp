@@ -14,29 +14,40 @@
 <%--&lt;%&ndash;     this is a index page&ndash;%&gt;--%>
 <%--&lt;%&ndash;</body>&ndash;%&gt;--%>
 <%--&lt;%&ndash;</html>&ndash;%&gt;--%>
-<%--<%@ page language="java" pageEncoding="UTF-8"%>--%>
 
-<%--<!DOCTYPE HTML>--%>
 
+<%--<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">--%>
 <%--<html>--%>
-
 <%--<head>--%>
-
-<%--    <title>文件上传</title>--%>
+<%--    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">--%>
+<%--    <title>Insert title here</title>--%>
 
 <%--</head>--%>
 
 
-
 <%--<body>--%>
 
-<%--<form action="${pageContext.request.contextPath}/api/file/upload.json" enctype="multipart/form-data" method="post"         上传用户：<input type="text"name="username"><br/>--%>
+<%--&lt;%&ndash;<form action="${pageContext.request.contextPath}/api/file/upload.json" enctype="multipart/form-data" method="post"         上传用户：<input type="text"name="username"><br/>&ndash;%&gt;--%>
 
-<%--上传文件：<input type="file" name="file"><br/>--%>
-<%--<input type="submit" value="提交">--%>
+<%--&lt;%&ndash;上传文件：<input type="file" name="file"><br/>&ndash;%&gt;--%>
+<%--&lt;%&ndash;<input type="submit" value="提交">&ndash;%&gt;--%>
 
-<%--</form>--%>
+<%--&lt;%&ndash;</form>&ndash;%&gt;--%>
+
 
 <%--</body>--%>
 
+
 <%--</html>--%>
+
+
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>test</title>
+</head>
+<body>
+<%--<h1>${fileId}</h1>--%>
+<img src=${fileId}/>
+</body>
+</html>

@@ -28,7 +28,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
-<!--            <scope>provided</scope>-->
+            <!--            <scope>provided</scope>-->
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -63,26 +63,23 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
-<!--            <version>1.5.4.RELEASE</version>-->
+            <!--            <version>1.5.4.RELEASE</version>-->
         </dependency>
 
         <!--mysql-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-<!--            <version>5.1.42</version>-->
+            <!--            <version>5.1.42</version>-->
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
-<!--            <version>1.0.29</version>-->
+            <!--            <version>1.0.29</version>-->
             <version>1.1.10</version>
         </dependency>
-
-
-
 
 
         <dependency>
@@ -115,7 +112,7 @@
             <version>1.7.25</version>
         </dependency>
 
-<!--        使用复制工具类-->
+        <!--        使用复制工具类-->
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
@@ -131,6 +128,33 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
-    </build>
 
+
+<!--            <resources>-->
+
+<!--                <resource>-->
+<!--                    <directory>src/main/java</directory>-->
+<!--                    <includes>-->
+<!--                        <include>**/*.xml</include>-->
+<!--                    </includes>-->
+<!--                </resource>-->
+
+<!--                <resource>-->
+<!--                    <directory>src/main/resources</directory>-->
+<!--                    <includes>-->
+<!--                        <include>**/*.*</include>-->
+<!--                    </includes>-->
+<!--                </resource>-->
+
+<!--                &lt;!&ndash;springboot使用的web资源要编译到META-INF/resources&ndash;&gt;-->
+<!--                <resource>-->
+<!--                    <directory>src/main/webapp</directory>-->
+<!--                    <targetPath>META-INF/resources</targetPath>-->
+<!--                    <includes>-->
+<!--                        <include>**/*.*</include>-->
+<!--                    </includes>-->
+<!--                </resource>-->
+
+<!--            </resources>-->
+    </build>
 </project>

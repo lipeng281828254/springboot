@@ -1,6 +1,8 @@
 package com.dapeng.springboot.controller;
 
-import org.springframework.stereotype.Controller;
+import com.dapeng.springboot.service.JobSerivce;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,14 +17,19 @@ import org.springframework.web.bind.annotation.RestController;
  * 〈功能〉：helloword的访问控制器
  * ==================================================
  */
+@Slf4j
 //@Controller
 @RestController
 public class HelloWordController {
 
+    @Autowired
+    private JobSerivce jobSerivce;
+
     @RequestMapping(value = "/")
-    public String toIndex(){
+    public String toIndex() {
         System.out.println("->>进入控制器");
         return "success";
 //        return "index";
     }
+
 }
