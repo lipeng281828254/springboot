@@ -66,6 +66,7 @@ public class UserInfoController {
     @PostMapping("/login.json")
     public UserInfoDto login(@Valid @RequestBody LoginDto loginDto, HttpServletRequest request) {
         HttpSession session = request.getSession();
+        session.setMaxInactiveInterval(60*60*24);//一天
         return userInfoService.login(loginDto, session);
     }
 
