@@ -195,8 +195,8 @@ public class JobSerivce {
      * @param handlerId
      * @return
      */
-    public List<JobDto> queryByHandleId(Long projectId,String type,Long handlerId) {
-        List<JobEntity> entits = jobDao.findByProjectIdAndTypeAndHandlerId(projectId,type,handlerId);
+    public List<JobDto> queryByHandleId(Long projectId, String type, Long handlerId) {
+        List<JobEntity> entits = jobDao.findByProjectIdAndTypeAndHandlerId(projectId, type, handlerId);
         if (entits == null || entits.size() < 1) {
             return new ArrayList<>();
         }
@@ -226,15 +226,30 @@ public class JobSerivce {
         List<JobDto> jobDtos = new ArrayList<>();
         entities.forEach(jobEntity -> {
             JobDto jobDto1 = new JobDto();
-            BeanUtils.copyProperties(jobEntity,jobDto1);
+            BeanUtils.copyProperties(jobEntity, jobDto1);
             jobDtos.add(jobDto1);
         });
         return jobDtos;
     }
 
 
-    public List<JobDto> queryMyCreate(Long projectId,String type,Long createBy) {
-        List<JobEntity> entits = jobDao.findByProjectIdAndTypeAndCreateBy(projectId,type,createBy);
+    public List<JobDto> queryMyCreate(Long projectId, String type, Long createBy) {
+        List<JobEntity> entits = jobDao.findByProjectIdAndTypeAndCreateBy(projectId, type, createBy);
+        if (entits == null || entits.size() < 1) {
+            return new ArrayList<>();
+        }
+        List<JobDto> jobDtos = new ArrayList<>();
+        entits.forEach(jobEntity -> {
+            JobDto jobDto = new JobDto();
+            BeanUtils.copyProperties(jobEntity, jobDto);
+            jobDtos.add(jobDto);
+        });
+        return jobDtos;
+    }
+
+    //根据类型查询列表
+    public List<JobDto> listJobByPidAndType(Long projectId, String type) {
+        List<JobEntity> entits = jobDao.findByProjectIdAndType(projectId, type);
         if (entits == null || entits.size() < 1) {
             return new ArrayList<>();
         }

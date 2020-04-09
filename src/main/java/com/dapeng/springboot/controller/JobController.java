@@ -66,6 +66,13 @@ public class JobController {
         return jobSerivce.getById(id);
     }
 
+    /**
+     * 查询代办
+     * @param projectId
+     * @param type
+     * @param request
+     * @return
+     */
     @GetMapping("queryNeedToDealt.json")
     public List<JobDto> queryNeedToDetail(Long projectId,String type,HttpServletRequest request) {
         HttpSession session = request.getSession();
@@ -85,4 +92,11 @@ public class JobController {
         return jobSerivce.queryJobByConditons(jobDto);
     }
 
+    /**
+     * 根据状态查询项目下的工作项
+     */
+    @GetMapping("listJobByType.json")
+    public List<JobDto> listJobsByPid(Long projectId,String type){
+        return jobSerivce.listJobByPidAndType(projectId,type);
+    }
 }
