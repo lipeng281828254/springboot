@@ -2,10 +2,7 @@ package com.dapeng.springboot.service;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
-import com.dapeng.springboot.dto.JobDto;
-import com.dapeng.springboot.dto.NoticeDto;
-import com.dapeng.springboot.dto.ProjectInfoDto;
-import com.dapeng.springboot.dto.UserInfoDto;
+import com.dapeng.springboot.dto.*;
 import com.dapeng.springboot.entity.JobEntity;
 import com.dapeng.springboot.jpa.JobDao;
 
@@ -260,5 +257,30 @@ public class JobSerivce {
             jobDtos.add(jobDto);
         });
         return jobDtos;
+    }
+
+    //根据迭代id统计
+    public IterationStatisticDto statisticJob(Long jobId) {
+        List<JobEntity> xuqiu = jobDao.findByIterationIdAndType(jobId, "需求");
+        List<JobEntity> task = jobDao.findByIterationIdAndType(jobId, "任务");
+        List<JobEntity> defect = jobDao.findByIterationIdAndType(jobId, "缺陷");
+        IterationStatisticDto statisticDto = new IterationStatisticDto();
+        if (xuqiu == null || xuqiu.size() < 1) {
+            statisticDto.setDemandCount(0);
+        } else {
+            statisticDto.setDemandCount(xuqiu.size());
+        }
+        if (task == null || task.size() < 1) {
+            statisticDto.setTaskCount(0);
+        } else {
+            statisticDto.setTaskCount(task.size());
+        }
+        if (defect == null || defect.size() < 1) {
+            statisticDto.setDefectCount(0);
+        } else {
+            statisticDto.setDefectCount(defect.size());
+        }
+        statisticDto.setTaskCount(statisticDto.getDefectCount() + statisticDto.getTaskCount() + statisticDto.getDemandCount());
+        return statisticDto;
     }
 }

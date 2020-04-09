@@ -1,5 +1,6 @@
 package com.dapeng.springboot.controller;
 
+import com.dapeng.springboot.dto.IterationStatisticDto;
 import com.dapeng.springboot.dto.JobDto;
 import com.dapeng.springboot.dto.UserInfoDto;
 import com.dapeng.springboot.service.JobSerivce;
@@ -93,10 +94,18 @@ public class JobController {
     }
 
     /**
-     * 根据状态查询项目下的工作项
+     * 根据类型查询项目下的工作项
      */
     @GetMapping("listJobByType.json")
     public List<JobDto> listJobsByPid(Long projectId,String type){
         return jobSerivce.listJobByPidAndType(projectId,type);
+    }
+
+    /**
+     * 迭代统计信息
+     */
+    @GetMapping("statisticIteration.json")
+    public IterationStatisticDto statisticById(Long jobId){
+        return jobSerivce.statisticJob(jobId);
     }
 }

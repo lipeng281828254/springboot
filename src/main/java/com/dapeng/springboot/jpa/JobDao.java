@@ -29,4 +29,6 @@ public interface JobDao extends JpaRepository<JobEntity,Long>, JpaSpecificationE
     List<JobEntity> findByProjectIdAndTypeAndCreateBy(Long projectId,String type,Long createBy);
 
     List<JobEntity> findByProjectIdAndType(Long projectId, String type);
+
+    List<JobEntity> findByIterationIdAndType(Long jobId, String type);
 }
