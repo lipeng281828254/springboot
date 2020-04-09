@@ -32,6 +32,9 @@ public interface JobDao extends JpaRepository<JobEntity,Long>, JpaSpecificationE
 
     List<JobEntity> findByIterationIdAndType(Long iterationId, String type);
 
+    @Query(value = "select handler_id from job_info group by  handler_id",nativeQuery = true)
+    List<Long> queryHandlers(Long jobId);
+
 //    @Query(value = "SELECT * FROM job_info WHERE  iteration_id=?1 and status not in ('已发布','已拒绝','') ", nativeQuery = true)
 //    int findIterationByStatus(Long iterationId);
 }

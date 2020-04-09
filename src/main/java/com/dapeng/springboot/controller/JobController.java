@@ -113,8 +113,8 @@ public class JobController {
      * 查询迭代下详情
      */
     @GetMapping("queryByIteration.json")
-    public List<JobDto> queryByInteration(Long jobId){
+    public List<IterationStatisticDto> queryByInteration(Long jobId){
 
-        return null;
+        return jobSerivce.queryByIteration(jobId);
     }
 }

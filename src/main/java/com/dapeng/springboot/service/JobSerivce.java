@@ -283,4 +283,18 @@ public class JobSerivce {
         statisticDto.setTaskCount(statisticDto.getDefectCount() + statisticDto.getTaskCount() + statisticDto.getDemandCount());
         return statisticDto;
     }
+
+    //查询迭代下列表
+    public List<IterationStatisticDto> queryByIteration(Long jobId) {
+        //查询当前迭代人员所有的处理人
+        List<Long> handlers = jobDao.queryHandlers(jobId);
+        if (handlers == null || handlers.size()<1){
+            return new ArrayList<>();
+        }
+        handlers.forEach(handlerId ->{
+            IterationStatisticDto iterationStatisticDto = new IterationStatisticDto();
+
+        });
+        return null;
+    }
 }

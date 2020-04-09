@@ -1,13 +1,10 @@
 package com.dapeng.springboot.controller;
 
-import com.dapeng.springboot.dto.InviteProjectDto;
-import com.dapeng.springboot.dto.ProjectInfoDto;
-import com.dapeng.springboot.dto.ReplyDto;
-import com.dapeng.springboot.dto.UserInfoDto;
+import com.dapeng.springboot.dto.*;
 import com.dapeng.springboot.service.ProjectService;
 import com.dapeng.springboot.service.UserInfoService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +18,7 @@ import java.util.List;
  * @date 2020/3/11 23:03
  * @message：项目控制层
  */
+@Slf4j
 @RestController
 @RequestMapping("api/project/")
 public class ProjectController {
@@ -73,13 +71,17 @@ public class ProjectController {
 
     //更新权限
     @PostMapping("updateRoleByUserIdAndProjectId.json")
-    public Boolean updateRoleByPidAndUid(@Param("userId") Long userId, @Param("projectId") Long projectId, @Param("projectRole") String projectRole){
-        return projectService.updateUserRole(userId,projectId,projectRole);
+    public Boolean updateRoleByPidAndUid(@RequestBody ProjectUserReltiveDto reltiveDto){
+        return projectService.updateUserRole(reltiveDto.getUserId(),reltiveDto.getProjectId(),reltiveDto.getProjectRole());
     }
 
     //更新项目
     @PostMapping("updateProject.json")
-    public Boolean updateProjectById(@Param("id") Long id,@Param("projectName") String projectName,@Param("descript") String descript){
+    public Boolean updateProjectById(@RequestBody ProjectInfoDto projectInfoDto){
+        Long id = projectInfoDto.getId();
+        String projectName = projectInfoDto.getProjectName();
+        String descript = projectInfoDto.getDescript();
+        log.info("id=={},name={},des={}",id,projectName,descript);
         return projectService.updateProjectById(id,projectName,descript);
     }
 
