@@ -108,4 +108,13 @@ public class JobController {
     public IterationStatisticDto statisticById(Long jobId){
         return jobSerivce.statisticJob(jobId);
     }
+
+    /**
+     * 查询迭代下详情
+     */
+    @GetMapping("queryByIteration.json")
+    public List<JobDto> queryByInteration(Long jobId){
+
+        return null;
+    }
 }

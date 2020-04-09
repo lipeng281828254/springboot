@@ -3,6 +3,7 @@ package com.dapeng.springboot.dto;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 public class IterationStatisticDto implements Serializable {
@@ -18,4 +19,8 @@ public class IterationStatisticDto implements Serializable {
 
     //迭代下总数
     private Integer totalCount;
+
+
+    //对应的各类型的列表
+    private List<JobDto> jobDtos;
 }
