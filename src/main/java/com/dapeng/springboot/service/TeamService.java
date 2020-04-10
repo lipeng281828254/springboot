@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author lipeng
@@ -63,9 +66,10 @@ public class TeamService {
      * @param teamName
      * @return
      */
-    public boolean updateTeam(Long id,String teamName){
+    public boolean updateTeam(Long id, String teamName, HttpSession session){
         getById(id);
         int count = teamDao.updateTeamName(id,teamName);
+
         return count == 1;
     }
 
@@ -173,5 +177,19 @@ public class TeamService {
             throw new RuntimeException("用户不存在");
         }
         return userInfo;
+    }
+
+    public List<UserInfoDto> listUserById(Long id) {
+        List<UserInfoEntity> entity = userInfoDao.findByTeamId(id);
+        if (entity == null || entity.size()<1){
+            return  null;
+        }
+        List<UserInfoDto> userInfoDtos = new ArrayList<>();
+        entity.forEach(userInfoEntity -> {
+            UserInfoDto userInfoDto = new UserInfoDto();
+            BeanUtils.copyProperties(userInfoEntity,userInfoDto);
+            userInfoDtos.add(userInfoDto);
+        });
+        return userInfoDtos;
     }
 }

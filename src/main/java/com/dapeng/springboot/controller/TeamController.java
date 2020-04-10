@@ -2,12 +2,16 @@ package com.dapeng.springboot.controller;
 
 import com.dapeng.springboot.dto.InviteTeamDto;
 import com.dapeng.springboot.dto.ReplyDto;
+import com.dapeng.springboot.dto.TeamDto;
+import com.dapeng.springboot.dto.UserInfoDto;
 import com.dapeng.springboot.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @author lipeng
@@ -33,8 +37,9 @@ public class TeamController {
 //        return teamService.createTeam(teamDto);
 //    }
     @PostMapping("updateTeamName.json")
-    public boolean updateTeamName(@Param("id") Long id, @Param("teamName") String teamName) {
-        return teamService.updateTeam(id, teamName);
+    public boolean updateTeamName(@RequestBody TeamDto teamDto, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        return teamService.updateTeam(teamDto.getId(), teamDto.getTeamName(),session);
     }
 
     //回复消息
@@ -47,5 +52,16 @@ public class TeamController {
     @PostMapping("invite.json")
     public Boolean inviteUser(@Valid @RequestBody InviteTeamDto inviteDto) {
         return teamService.inviteUser(inviteDto);
+    }
+
+
+    /**
+     * 根据团队id查询下成员
+     * @param id
+     * @return
+     */
+    @GetMapping("listUser.json")
+    public List<UserInfoDto> listUser(Long id){
+        return teamService.listUserById(id);
     }
 }

@@ -36,6 +36,8 @@ public interface UserInfoDao extends JpaRepository<UserInfoEntity,Long>, JpaSpec
     @Modifying
     int addTeamId(Long teamId,String teamName, Long userId);
 
+    List<UserInfoEntity> findByTeamId(Long teamId);
+
 
 //
 //    //修改密码
