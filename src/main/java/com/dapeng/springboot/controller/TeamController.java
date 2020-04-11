@@ -1,5 +1,6 @@
 package com.dapeng.springboot.controller;
 
+import cn.hutool.system.UserInfo;
 import com.dapeng.springboot.dto.InviteTeamDto;
 import com.dapeng.springboot.dto.ReplyDto;
 import com.dapeng.springboot.dto.TeamDto;
@@ -44,7 +45,10 @@ public class TeamController {
 
     //回复消息
     @PostMapping("replyNotice.json")
-    public Boolean acceptUser(@Valid @RequestBody ReplyDto replyDto) {
+    public Boolean acceptUser(@Valid @RequestBody ReplyDto replyDto,HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        UserInfoDto userInfoDto = (UserInfoDto) session.getAttribute("userInfo");
+        replyDto.setUserId(userInfoDto.getId());
         return teamService.replyUser(replyDto);
     }
 

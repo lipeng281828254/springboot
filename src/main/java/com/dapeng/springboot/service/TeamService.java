@@ -146,7 +146,7 @@ public class TeamService {
     public boolean replyUser(ReplyDto replyDto){
         log.info("回复邀请通知入参，{}",replyDto);
         NoticeDto noticeDto = getByNoticeId(replyDto.getNoticeId());
-        if (!"OK".equals(replyDto.getIsOk())){
+        if (!"ok".equals(replyDto.getIsOk())){
             //生成拒绝的数据
             //加入团队通知给发起人
             NoticeDto replyNotice = buildNoticeInfo(noticeDto.getCreateBy(),noticeDto.getCreateName(), noticeDto.getTeamId(),noticeDto.getTeamName(),replyDto.getUserId(),"reply","ok");

@@ -56,7 +56,7 @@ public class JobEntity implements Serializable {
     private String projectName;
 
     @Column(name = "priority_level",columnDefinition = "int(4) comment '优先级别'")
-    private String priorityLevel;
+    private Integer priorityLevel;
 
     @Column(name = "create_by",columnDefinition = "bigint(18) comment '创建人id'")
     private Long createBy;
