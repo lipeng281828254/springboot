@@ -303,7 +303,7 @@ public class JobSerivce {
     //查询按裂隙
     private IterationStatisticDto statistic(Long jobId,String type){
         IterationStatisticDto iterationStatisticDto = new IterationStatisticDto();
-        List<JobEntity> entities = jobDao.findByJobIdAndType(jobId,type);
+        List<JobEntity> entities = jobDao.findByIdAndType(jobId,type);
         if (entities == null || entities.size() < 1){
             iterationStatisticDto.setDemandCount(0);
             iterationStatisticDto.setJobDtos(new ArrayList<>());
