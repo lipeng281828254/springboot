@@ -291,10 +291,36 @@ public class JobSerivce {
         if (handlers == null || handlers.size()<1){
             return new ArrayList<>();
         }
+        List<IterationStatisticDto> statisticDtos = new ArrayList<>();
         handlers.forEach(handlerId ->{
-            IterationStatisticDto iterationStatisticDto = new IterationStatisticDto();
-
+            statisticDtos.add(statistic(handlerId,"需求"));
+            statisticDtos.add(statistic(handlerId,"任务"));
+            statisticDtos.add(statistic(handlerId,"缺陷"));
         });
-        return null;
+        return statisticDtos;
+    }
+
+    //查询按裂隙
+    private IterationStatisticDto statistic(Long jobId,String type){
+        IterationStatisticDto iterationStatisticDto = new IterationStatisticDto();
+        List<JobEntity> entities = jobDao.findByJobIdAndType(jobId,type);
+        if (entities == null || entities.size() < 1){
+            iterationStatisticDto.setDemandCount(0);
+            iterationStatisticDto.setJobDtos(new ArrayList<>());
+        } else {
+            iterationStatisticDto.setDemandCount(entities.size());
+            iterationStatisticDto.setJobDtos(build(entities));
+        }
+        return iterationStatisticDto;
+    }
+
+    private List<JobDto> build(List<JobEntity> entities){
+        List<JobDto> jobDtos = new ArrayList<>();
+        entities.forEach(entity ->{
+            JobDto jobDto = new JobDto();
+            BeanUtils.copyProperties(entity,jobDto);
+            jobDtos.add(jobDto);
+        });
+        return jobDtos;
     }
 }
