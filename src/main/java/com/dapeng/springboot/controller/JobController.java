@@ -4,6 +4,7 @@ import com.dapeng.springboot.dto.IterationStatisticDto;
 import com.dapeng.springboot.dto.JobDto;
 import com.dapeng.springboot.dto.UserInfoDto;
 import com.dapeng.springboot.service.JobSerivce;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,7 @@ import java.util.List;
  * @date 2020/3/17 0:04
  * @message：
  */
+@Slf4j
 @RestController
 @RequestMapping("api/job/")
 public class JobController {
@@ -50,13 +52,14 @@ public class JobController {
 
     //根据id删除
     @PostMapping("deleteById.json")
-    public boolean deleteById(Long id) {
-        return jobSerivce.deleteById(id);
+    public boolean deleteById(@RequestBody JobDto jobDto) {
+        log.info("id = {}",jobDto.getId());
+        return jobSerivce.deleteById(jobDto.getId());
     }
 
     //更新jOb信息，状态变化生成消息
     @PostMapping("updateJob.json")
-    public boolean updateJob(JobDto jobDto, HttpServletRequest request) {
+    public boolean updateJob(@RequestBody JobDto jobDto, HttpServletRequest request) {
         HttpSession session = request.getSession();
         UserInfoDto userInfoDto = (UserInfoDto) session.getAttribute("userInfo");
         return jobSerivce.updateJob(jobDto, userInfoDto);

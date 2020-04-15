@@ -22,7 +22,7 @@ public class CommentEntity implements Serializable {
     @Column(name = "id", columnDefinition = "bigint(18) comment '主键'")
     private Long id;
 
-    @Column(name = "job_id", columnDefinition = "bigint(18) comment 'jobid'")
+    @Column(name = "biz_id", columnDefinition = "bigint(18) comment 'jobid'")
     private Long jobId;
 
     @Column(name = "comment_id", columnDefinition = "bigint(18) comment '评论人id'")
