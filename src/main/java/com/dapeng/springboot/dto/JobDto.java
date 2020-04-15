@@ -87,7 +87,6 @@ public class JobDto implements Serializable {
     private String createName;
 
     //处理人
-    @NotNull(message = "处理人id不能为空")
     private Long handlerId;
 
     //处理人姓名
@@ -115,6 +114,12 @@ public class JobDto implements Serializable {
     public void check(){
         if (!StringUtils.isEmpty(fileId) && StringUtils.isEmpty(fileName)){
             throw new RuntimeException("文件名称不能为空");
+        }
+    }
+
+    public void checkDd(){
+        if (!"迭代".equals(type) && StringUtils.isEmpty(handlerId)){
+            throw new RuntimeException("需求，任务，缺陷处理人必传");
         }
     }
 }

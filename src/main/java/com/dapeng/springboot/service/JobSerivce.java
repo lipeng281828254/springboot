@@ -45,10 +45,13 @@ public class JobSerivce {
      * @return
      */
     public JobDto saveJob(JobDto jobDto) {
+        jobDto.checkDd();
         JobEntity entity = new JobEntity();
         BeanUtils.copyProperties(jobDto, entity);
-        UserInfoDto handler = getUserInfo(jobDto.getHandlerId());
-        entity.setHandlerName(handler.getUserName());
+        if (!"迭代".equals(jobDto.getType())){
+            UserInfoDto handler = getUserInfo(jobDto.getHandlerId());
+            entity.setHandlerName(handler.getUserName());
+        }
         entity.setProjectName(getByProjectId(jobDto.getProjectId()).getProjectName());
         jobDao.save(entity);
         jobDto.setId(entity.getId());
