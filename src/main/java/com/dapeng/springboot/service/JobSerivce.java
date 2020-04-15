@@ -106,19 +106,19 @@ public class JobSerivce {
         log.info("创建消息通知信息开始---");
         //附件上传生成消息
         String name = StringUtils.isEmpty(userInfoDto.getUserName()) ? userInfoDto.getId().toString() : userInfoDto.getUserName();
-        if (!StringUtils.isEmpty(jobDto.getFileId())) {
+        if (!StringUtils.isEmpty(jobDto.getFileId()) && !jobDto.getFileId().equals(entity.getFileId())) {
             log.info("上传附件信息创建通知");
             String content = "用户".concat(name).concat("上传了文件").concat(jobDto.getFileName());
             createNotice(entity, jobDto, userInfoDto, "上传附件通知", content);
         }
         //状态变化生成消息
-        if (!StringUtils.isEmpty(jobDto.getStatus())) {
+        if (!StringUtils.isEmpty(jobDto.getStatus()) && !jobDto.getStatus().equals(entity.getStatus())) {
             log.info("修改状态信息创建通知");
             String content = "用户".concat(name).concat("将属性'状态'修改为").concat(jobDto.getStatus());
             createNotice(entity, jobDto, userInfoDto, "上传附件通知", content);
         }
         //修改处理人
-        if (!StringUtils.isEmpty(jobDto.getHandlerId())) {
+        if (!StringUtils.isEmpty(jobDto.getHandlerId()) && !jobDto.getHandlerId().equals(entity.getHandlerId())) {
             log.info("修改处理人信息创建通知");
             UserInfoDto dto = userInfoService.getById(jobDto.getHandlerId());
             jobDto.setHandlerName(dto.getUserName());
