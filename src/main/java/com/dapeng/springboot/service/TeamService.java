@@ -188,6 +188,14 @@ public class TeamService {
         entity.forEach(userInfoEntity -> {
             UserInfoDto userInfoDto = new UserInfoDto();
             BeanUtils.copyProperties(userInfoEntity,userInfoDto);
+            //查询邀请人，团队负责人
+            TeamEntity teamEntity = teamDao.getOne(userInfoEntity.getTeamId());
+            userInfoDto.setInviteId(teamEntity.getCreateBy());
+            String invitName = teamEntity.getCreateName();
+            if (StringUtils.isEmpty(invitName)){
+                invitName = userInfoDao.getOne(teamEntity.getCreateBy()).getUserName();
+            }
+            userInfoDto.setInviteName(invitName);
             userInfoDtos.add(userInfoDto);
         });
         return userInfoDtos;
