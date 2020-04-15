@@ -4,12 +4,15 @@ import com.dapeng.springboot.common.ConstantRecord;
 import com.dapeng.springboot.dto.*;
 import com.dapeng.springboot.entity.ProjectEntity;
 import com.dapeng.springboot.entity.ProjectUserReltiveEntity;
+import com.dapeng.springboot.entity.TeamEntity;
 import com.dapeng.springboot.entity.UserInfoEntity;
 import com.dapeng.springboot.jpa.ProjectDao;
 import com.dapeng.springboot.jpa.ProjectUserDao;
+import com.dapeng.springboot.jpa.TeamDao;
 import com.dapeng.springboot.jpa.UserInfoDao;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -36,6 +39,8 @@ public class ProjectService {
     private UserInfoDao userInfoDao;
     @Resource
     private NoticeService noticeService;
+    @Autowired
+    private TeamDao teamDao;
 
     /**
      * 创建项目
@@ -99,6 +104,16 @@ public class ProjectService {
             userInfoDto.setLoginName(userInfoEntity.getLoginName());
             //查询角色信息
             userInfoDto.setProjectRole(reltiveEntity.getProjectRole());
+            //邀请人
+            if ("02".equals(userInfoEntity.getUserType())){
+                userInfoDto.setInviteId(userInfoEntity.getId());
+                userInfoDto.setInviteName(userInfoEntity.getUserName());
+            } else {
+                Long teamId = userInfoEntity.getTeamId();
+                TeamEntity teamEntity = teamDao.getOne(teamId);
+                userInfoDto.setInviteId(teamEntity.getCreateBy());
+                userInfoDto.setInviteName(teamEntity.getCreateName());
+            }
             userInfoDtos.add(userInfoDto);
         });
         return userInfoDtos;
