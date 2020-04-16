@@ -120,4 +120,9 @@ public class JobController {
 
         return jobSerivce.queryByIteration(jobId);
     }
+
+    @GetMapping("queryAllByIterationId")
+    public List<JobDto> queryByIterationId(Long jobId){
+        return jobSerivce.queryAllByIteration(jobId);
+    }
 }

@@ -296,26 +296,34 @@ public class JobSerivce {
         }
         List<IterationStatisticDto> statisticDtos = new ArrayList<>();
         handlers.forEach(handlerId ->{
-            statisticDtos.add(statistic(handlerId,"需求"));
-            statisticDtos.add(statistic(handlerId,"任务"));
-            statisticDtos.add(statistic(handlerId,"缺陷"));
+            IterationStatisticDto xuqiu = new IterationStatisticDto();
+            statistic(jobId,"需求",xuqiu);
+            statisticDtos.add(xuqiu);
+            IterationStatisticDto task = new IterationStatisticDto();
+            statistic(jobId,"任务",task);
+            statisticDtos.add(task);
+            IterationStatisticDto quexian = new IterationStatisticDto();
+            statistic(jobId,"缺陷",quexian);
+            statisticDtos.add(quexian);
         });
         return statisticDtos;
     }
 
     //查询按裂隙
-    private IterationStatisticDto statistic(Long jobId,String type){
-        IterationStatisticDto iterationStatisticDto = new IterationStatisticDto();
-        List<JobEntity> entities = jobDao.findByIdAndType(jobId,type);
+    private IterationStatisticDto statistic(Long jobId,String type,IterationStatisticDto iterationStatisticDto){
+        List<JobEntity> entities = jobDao.findByIterationIdAndType(jobId,type);
         if (entities == null || entities.size() < 1){
             iterationStatisticDto.setDemandCount(0);
             iterationStatisticDto.setJobDtos(new ArrayList<>());
         } else {
+            iterationStatisticDto.setHandlerName(entities.get(0).getHandlerName());
             iterationStatisticDto.setDemandCount(entities.size());
             iterationStatisticDto.setJobDtos(build(entities));
         }
         return iterationStatisticDto;
     }
+
+
 
     private List<JobDto> build(List<JobEntity> entities){
         List<JobDto> jobDtos = new ArrayList<>();
@@ -323,6 +331,21 @@ public class JobSerivce {
             JobDto jobDto = new JobDto();
             BeanUtils.copyProperties(entity,jobDto);
             jobDtos.add(jobDto);
+        });
+        return jobDtos;
+    }
+
+    //根据迭代id查询下面所有列表，任务需求，缺陷
+    public List<JobDto> queryAllByIteration(Long jobId) {
+        List<JobEntity> entities = jobDao.findByIterationId(jobId);
+        if (entities == null || entities.size()<1){
+            return null;
+        }
+        List<JobDto> jobDtos = new ArrayList<>();
+        entities.forEach(entity->{
+            JobDto jp = new JobDto();
+            BeanUtils.copyProperties(entity,jp);
+            jobDtos.add(jp);
         });
         return jobDtos;
     }

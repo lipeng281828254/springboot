@@ -20,6 +20,9 @@ public class IterationStatisticDto implements Serializable {
     //迭代下总数
     private Integer totalCount;
 
+    //处理人
+    private String handlerName;
+
 
     //对应的各类型的列表
     private List<JobDto> jobDtos;
