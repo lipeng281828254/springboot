@@ -297,21 +297,21 @@ public class JobSerivce {
         List<IterationStatisticDto> statisticDtos = new ArrayList<>();
         handlers.forEach(handlerId ->{
             IterationStatisticDto xuqiu = new IterationStatisticDto();
-            statistic(jobId,"需求",xuqiu);
+            statistic(jobId,"需求",handlerId,xuqiu);
             statisticDtos.add(xuqiu);
             IterationStatisticDto task = new IterationStatisticDto();
-            statistic(jobId,"任务",task);
+            statistic(jobId,"任务",handlerId,task);
             statisticDtos.add(task);
             IterationStatisticDto quexian = new IterationStatisticDto();
-            statistic(jobId,"缺陷",quexian);
+            statistic(jobId,"缺陷",handlerId,quexian);
             statisticDtos.add(quexian);
         });
         return statisticDtos;
     }
 
     //查询按裂隙
-    private IterationStatisticDto statistic(Long jobId,String type,IterationStatisticDto iterationStatisticDto){
-        List<JobEntity> entities = jobDao.findByIterationIdAndType(jobId,type);
+    private IterationStatisticDto statistic(Long jobId,String type,Long handleId,IterationStatisticDto iterationStatisticDto){
+        List<JobEntity> entities = jobDao.findByIterationIdAndTypeAndHandlerId(jobId,type,handleId);
         if (entities == null || entities.size() < 1){
             iterationStatisticDto.setDemandCount(0);
             iterationStatisticDto.setJobDtos(null);
