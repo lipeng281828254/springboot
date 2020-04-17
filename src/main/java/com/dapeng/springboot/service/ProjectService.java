@@ -112,7 +112,7 @@ public class ProjectService {
                 Long teamId = userInfoEntity.getTeamId();
                 TeamEntity teamEntity = teamDao.getOne(teamId);
                 userInfoDto.setInviteId(teamEntity.getCreateBy());
-                userInfoDto.setInviteName(teamEntity.getCreateName());
+                userInfoDto.setInviteName(!StringUtils.isEmpty(teamEntity.getCreateName())?teamEntity.getCreateName():userInfoDao.getOne(teamEntity.getCreateBy()).getUserName());
             }
             userInfoDtos.add(userInfoDto);
         });
