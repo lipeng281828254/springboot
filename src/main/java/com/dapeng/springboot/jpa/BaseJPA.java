@@ -11,7 +11,7 @@ import java.io.Serializable;
  * <p>
  * FileName: BaseJPA
  *
- * @author : lipeng
+ * @author zibing
  * @create 2019/9/24
  * @since 1.0.0
  * 〈功能〉：baseJpa，所有业务jpa的父接口

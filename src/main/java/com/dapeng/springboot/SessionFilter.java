@@ -10,7 +10,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
- * @author lipeng
+ * @author zibing
  * @version 1.0
  * @date 2020/3/19 2:36
  * @message：过滤器

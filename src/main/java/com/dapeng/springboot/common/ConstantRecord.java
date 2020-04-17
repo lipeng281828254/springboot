@@ -1,7 +1,7 @@
 package com.dapeng.springboot.common;
 
 /**
- * @author lipeng
+ * @author zibing
  * @version 1.0
  * @date 2020/3/10 23:55
  * @message：常量记录类

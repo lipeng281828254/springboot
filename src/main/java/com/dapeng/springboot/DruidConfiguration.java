@@ -18,7 +18,7 @@ import java.sql.SQLException;
  * <p>
  * FileName: DruidConfiguration
  *
- * @author : lipeng
+ * @author zibing
  * @create 2019/10/8
  * @since 1.0.0
  * 〈功能〉：druid配置类

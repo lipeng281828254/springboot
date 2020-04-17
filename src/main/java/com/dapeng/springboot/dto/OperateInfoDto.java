@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @author lipeng
+ * @author zibing
  * @version 1.0
  * @date 2020/3/21 1:07
  * @message：操作信息

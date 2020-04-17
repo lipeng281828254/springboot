@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @author lipeng
+ * @author zibing
  * @version 1.0
  * @date 2020/3/16 12:57
  * @message：工作管理实体

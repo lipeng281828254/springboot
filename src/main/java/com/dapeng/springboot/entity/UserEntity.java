@@ -11,7 +11,7 @@ import java.util.Map;
  * <p>
  * FileName: UserEntity
  *
- * @author : lipeng
+ * @author zibing
  * @create 2019/9/24
  * @since 1.0.0
  * 〈功能〉：TODO

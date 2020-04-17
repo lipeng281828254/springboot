@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
 /**
- * @author lipeng
+ * @author zibing
  * @version 1.0
  * @date 2020/3/8 0:17
  * @message：用户服务

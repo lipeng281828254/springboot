@@ -3,7 +3,7 @@ package com.dapeng.springboot.util;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * @author lipeng
+ * @author zibing
  * @version 1.0
  * @date 2020/3/8 2:48
  * @message：参与基本验证

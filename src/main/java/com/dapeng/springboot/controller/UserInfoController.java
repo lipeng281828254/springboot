@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 /**
- * @author lipeng
+ * @author zibing
  * @version 1.0
  * @date 2020/3/8 0:14
  * @message：用户信息控制层

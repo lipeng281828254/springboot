@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.Properties;
 
 /**
- * @author lipeng
+ * @author zibing
  * @version 1.0
  * @date 2020/3/4 1:21
  * @message：
