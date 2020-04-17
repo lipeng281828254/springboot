@@ -51,6 +51,9 @@ public class JobSerivce {
         if (!"迭代".equals(jobDto.getType())){
             UserInfoDto handler = getUserInfo(jobDto.getHandlerId());
             entity.setHandlerName(handler.getUserName());
+            if (StringUtils.isEmpty(jobDto.getStatus())){
+                entity.setStatus("进行中");
+            }
         }
         entity.setProjectName(getByProjectId(jobDto.getProjectId()).getProjectName());
         jobDao.save(entity);
