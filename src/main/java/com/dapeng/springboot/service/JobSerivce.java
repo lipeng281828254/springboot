@@ -118,7 +118,7 @@ public class JobSerivce {
         if (!StringUtils.isEmpty(jobDto.getStatus()) && !jobDto.getStatus().equals(entity.getStatus())) {
             log.info("修改状态信息创建通知");
             String content = "用户".concat(name).concat("将属性'状态'修改为").concat(jobDto.getStatus());
-            createNotice(entity, jobDto, userInfoDto, "上传附件通知", content);
+            createNotice(entity, jobDto, userInfoDto, "状态变化通知", content);
         }
         //修改处理人
         if (!StringUtils.isEmpty(jobDto.getHandlerId()) && !jobDto.getHandlerId().equals(entity.getHandlerId())) {
@@ -292,7 +292,7 @@ public class JobSerivce {
         //查询当前迭代人员所有的处理人
         List<Long> handlers = jobDao.queryHandlers(jobId);
         if (handlers == null || handlers.size()<1){
-            return new ArrayList<>();
+            return null;
         }
         List<IterationStatisticDto> statisticDtos = new ArrayList<>();
         handlers.forEach(handlerId ->{
@@ -314,7 +314,7 @@ public class JobSerivce {
         List<JobEntity> entities = jobDao.findByIterationIdAndType(jobId,type);
         if (entities == null || entities.size() < 1){
             iterationStatisticDto.setDemandCount(0);
-            iterationStatisticDto.setJobDtos(new ArrayList<>());
+            iterationStatisticDto.setJobDtos(null);
         } else {
             iterationStatisticDto.setHandlerName(entities.get(0).getHandlerName());
             iterationStatisticDto.setDemandCount(entities.size());
