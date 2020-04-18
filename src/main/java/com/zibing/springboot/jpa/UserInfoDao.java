@@ -37,6 +37,11 @@ public interface UserInfoDao extends JpaRepository<UserInfoEntity,Long>, JpaSpec
 
     List<UserInfoEntity> findByTeamId(Long teamId);
 
+    @Transactional
+    @Query(value = "update user_info set team_name=?2 where team_id=?1",nativeQuery =true)
+    @Modifying
+    void updateTeamNameByTeamId(Long teamId, String teamName);
+
 
 //
 //    //修改密码

@@ -69,7 +69,11 @@ public class TeamService {
     public boolean updateTeam(Long id, String teamName, HttpSession session){
         getById(id);
         int count = teamDao.updateTeamName(id,teamName);
-
+        //更新用户的teamname
+        userInfoDao.updateTeamNameByTeamId(id,teamName);
+        UserInfoDto user = (UserInfoDto) session.getAttribute("userInfo");
+        user.setTeamName(teamName);
+        session.setAttribute("userInfo",user);
         return count == 1;
     }
 
