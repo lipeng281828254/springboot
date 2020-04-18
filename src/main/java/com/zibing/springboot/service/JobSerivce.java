@@ -48,13 +48,17 @@ public class JobSerivce {
         jobDto.checkDd();
         JobEntity entity = new JobEntity();
         BeanUtils.copyProperties(jobDto, entity);
-        if (!"迭代".equals(jobDto.getType())){
+        if (!"迭代".equals(jobDto.getType())) {
             UserInfoDto handler = getUserInfo(jobDto.getHandlerId());
             entity.setHandlerName(handler.getUserName());
-            if (StringUtils.isEmpty(jobDto.getStatus())){
+            if (StringUtils.isEmpty(jobDto.getStatus())) {
                 entity.setStatus("进行中");
             }
+            if (jobDto.getIterationId() != null) {
+                entity.setIterationName(jobDao.getOne(jobDto.getIterationId()).getTitle());//设置迭代名字
+            }
         }
+
         entity.setProjectName(getByProjectId(jobDto.getProjectId()).getProjectName());
         jobDao.save(entity);
         jobDto.setId(entity.getId());
@@ -286,7 +290,7 @@ public class JobSerivce {
         } else {
             statisticDto.setDefectCount(defect.size());
         }
-        statisticDto.setTaskCount(statisticDto.getDefectCount() + statisticDto.getTaskCount() + statisticDto.getDemandCount());
+        statisticDto.setTotalCount(statisticDto.getDefectCount() + statisticDto.getTaskCount() + statisticDto.getDemandCount());
         return statisticDto;
     }
 
@@ -294,45 +298,51 @@ public class JobSerivce {
     public List<IterationStatisticDto> queryByIteration(Long jobId) {
         //查询当前迭代人员所有的处理人
         List<Long> handlers = jobDao.queryHandlers(jobId);
-        if (handlers == null || handlers.size()<1){
+        if (handlers == null || handlers.size() < 1) {
             return null;
         }
         List<IterationStatisticDto> statisticDtos = new ArrayList<>();
-        handlers.forEach(handlerId ->{
-            IterationStatisticDto xuqiu = new IterationStatisticDto();
-            statistic(jobId,"需求",handlerId,xuqiu);
-            statisticDtos.add(xuqiu);
-            IterationStatisticDto task = new IterationStatisticDto();
-            statistic(jobId,"任务",handlerId,task);
-            statisticDtos.add(task);
-            IterationStatisticDto quexian = new IterationStatisticDto();
-            statistic(jobId,"缺陷",handlerId,quexian);
-            statisticDtos.add(quexian);
+        handlers.forEach(handlerId -> {
+            IterationStatisticDto xuqiu = statistic(jobId, "需求", handlerId);
+            if (xuqiu != null) {
+                statisticDtos.add(xuqiu);
+            }
+            IterationStatisticDto task = statistic(jobId, "任务", handlerId);
+            if (task != null) {
+                statisticDtos.add(task);
+            }
+            IterationStatisticDto quexian = statistic(jobId, "缺陷", handlerId);
+            if (quexian != null) {
+                statisticDtos.add(quexian);
+            }
         });
         return statisticDtos;
     }
 
     //查询按裂隙
-    private IterationStatisticDto statistic(Long jobId,String type,Long handleId,IterationStatisticDto iterationStatisticDto){
-        List<JobEntity> entities = jobDao.findByIterationIdAndTypeAndHandlerId(jobId,type,handleId);
-        if (entities == null || entities.size() < 1){
-            iterationStatisticDto.setDemandCount(0);
-            iterationStatisticDto.setJobDtos(null);
+    private IterationStatisticDto statistic(Long jobId, String type, Long handleId) {
+        IterationStatisticDto statisticDto = null;
+        List<JobEntity> entities = jobDao.findByIterationIdAndTypeAndHandlerId(jobId, type, handleId);
+        if (entities == null || entities.size() < 1) {
+            //不处理，不然会返回一列空的，影响页面展示
+//            iterationStatisticDto.setDemandCount(0);
+//            iterationStatisticDto.setJobDtos(null);
+            return null;
         } else {
-            iterationStatisticDto.setHandlerName(entities.get(0).getHandlerName());
-            iterationStatisticDto.setDemandCount(entities.size());
-            iterationStatisticDto.setJobDtos(build(entities));
+            statisticDto = new IterationStatisticDto();
+            statisticDto.setHandlerName(entities.get(0).getHandlerName());
+            statisticDto.setDemandCount(entities.size());
+            statisticDto.setJobDtos(build(entities));
         }
-        return iterationStatisticDto;
+        return statisticDto;
     }
 
 
-
-    private List<JobDto> build(List<JobEntity> entities){
+    private List<JobDto> build(List<JobEntity> entities) {
         List<JobDto> jobDtos = new ArrayList<>();
-        entities.forEach(entity ->{
+        entities.forEach(entity -> {
             JobDto jobDto = new JobDto();
-            BeanUtils.copyProperties(entity,jobDto);
+            BeanUtils.copyProperties(entity, jobDto);
             jobDtos.add(jobDto);
         });
         return jobDtos;
@@ -341,13 +351,13 @@ public class JobSerivce {
     //根据迭代id查询下面所有列表，任务需求，缺陷
     public List<JobDto> queryAllByIteration(Long jobId) {
         List<JobEntity> entities = jobDao.findByIterationId(jobId);
-        if (entities == null || entities.size()<1){
+        if (entities == null || entities.size() < 1) {
             return null;
         }
         List<JobDto> jobDtos = new ArrayList<>();
-        entities.forEach(entity->{
+        entities.forEach(entity -> {
             JobDto jp = new JobDto();
-            BeanUtils.copyProperties(entity,jp);
+            BeanUtils.copyProperties(entity, jp);
             jobDtos.add(jp);
         });
         return jobDtos;
