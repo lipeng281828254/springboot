@@ -72,23 +72,25 @@ public class JobController {
 
     /**
      * 查询代办
-     * @param projectId
-     * @param type
+     * @param jobDto
+     * @param request
      * @param request
      * @return
      */
     @GetMapping("queryNeedToDealt.json")
-    public List<JobDto> queryNeedToDetail(Long projectId,String type,HttpServletRequest request) {
+    public List<JobDto> queryNeedToDetail(JobDto jobDto,HttpServletRequest request) {
         HttpSession session = request.getSession();
         UserInfoDto userInfoDto = (UserInfoDto) session.getAttribute("userInfo");
-        return jobSerivce.queryByHandleId(projectId,type,userInfoDto.getId());
+        jobDto.setHandlerId(userInfoDto.getId());
+        return jobSerivce.queryByHandleId(jobDto);
     }
 
     @GetMapping("queryMycreate.json")
-    public List<JobDto> queryMycreate(Long projectId,String type,HttpServletRequest request){
+    public List<JobDto> queryMycreate(JobDto jobDto,HttpServletRequest request){
         HttpSession session = request.getSession();
         UserInfoDto userInfoDto = (UserInfoDto) session.getAttribute("userInfo");
-        return jobSerivce.queryMyCreate(projectId,type,userInfoDto.getId());
+        jobDto.setCreateBy(userInfoDto.getId());
+        return jobSerivce.queryMyCreate(jobDto);
     }
 
     @GetMapping("queryJob.json")

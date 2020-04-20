@@ -190,6 +190,9 @@ public class UserInfoService {
         }
         UserInfoDto userInfoDto = new UserInfoDto();
         BeanUtils.copyProperties(entity, userInfoDto);
+        if (entity.getTeamId() != null){
+            userInfoDto.setTeamName(teamService.getById(entity.getTeamId()).getTeamName());
+        }
         return userInfoDto;
     }
 
@@ -211,6 +214,9 @@ public class UserInfoService {
         }
         UserInfoDto infoDto = new UserInfoDto();
         BeanUtils.copyProperties(entity, infoDto);
+        if (infoDto.getTeamId() != null){
+            infoDto.setTeamName(teamService.getById(entity.getTeamId()).getTeamName());
+        }
         return infoDto;
     }
 }

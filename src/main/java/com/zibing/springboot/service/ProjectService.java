@@ -83,6 +83,7 @@ public class ProjectService {
             ProjectEntity entity = projectDao.getOne(reltiveEntity.getProjectId());
             ProjectInfoDto infoDto = new ProjectInfoDto();
             BeanUtils.copyProperties(entity, infoDto);
+            infoDto.setCreateName(userInfoDao.getOne(entity.getCreateBy()).getUserName());
             infoDtos.add(infoDto);
         });
         return infoDtos;
@@ -112,7 +113,7 @@ public class ProjectService {
                 Long teamId = userInfoEntity.getTeamId();
                 TeamEntity teamEntity = teamDao.getOne(teamId);
                 userInfoDto.setInviteId(teamEntity.getCreateBy());
-                userInfoDto.setInviteName(!StringUtils.isEmpty(teamEntity.getCreateName())?teamEntity.getCreateName():userInfoDao.getOne(teamEntity.getCreateBy()).getUserName());
+                userInfoDto.setInviteName(userInfoDao.getOne(teamEntity.getCreateBy()).getUserName());
             }
             userInfoDtos.add(userInfoDto);
         });
@@ -281,6 +282,7 @@ public class ProjectService {
         }
         ProjectInfoDto projectInfoDto = new ProjectInfoDto();
         BeanUtils.copyProperties(entity, projectInfoDto);
+        projectInfoDto.setCreateName(userInfoDao.getOne(entity.getCreateBy()).getUserName());
         return projectInfoDto;
     }
 }

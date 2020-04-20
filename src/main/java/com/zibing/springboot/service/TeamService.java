@@ -77,7 +77,7 @@ public class TeamService {
         return count == 1;
     }
 
-    private TeamEntity getById(Long id){
+    public TeamEntity getById(Long id){
         TeamEntity entity = teamDao.getOne(id);
         if (entity == null){
             throw new RuntimeException("未查询到团队信息");
@@ -195,10 +195,7 @@ public class TeamService {
             //查询邀请人，团队负责人
             TeamEntity teamEntity = teamDao.getOne(userInfoEntity.getTeamId());
             userInfoDto.setInviteId(teamEntity.getCreateBy());
-            String invitName = teamEntity.getCreateName();
-            if (StringUtils.isEmpty(invitName)){
-                invitName = userInfoDao.getOne(teamEntity.getCreateBy()).getUserName();
-            }
+            String invitName = userInfoDao.getOne(teamEntity.getCreateBy()).getUserName();
             userInfoDto.setInviteName(invitName);
             userInfoDtos.add(userInfoDto);
         });

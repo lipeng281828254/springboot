@@ -6,6 +6,7 @@ import com.zibing.springboot.dto.OperateInfoDto;
 import com.zibing.springboot.dto.UserInfoDto;
 import com.zibing.springboot.entity.OperateInfoEntity;
 import com.zibing.springboot.jpa.OperateDao;
+import com.zibing.springboot.jpa.UserInfoDao;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,8 @@ public class OperateService {
 
     @Resource
     private OperateDao operateDao;
+    @Resource
+    private UserInfoDao userInfoDao;
 
     /**
      * 操作添加
@@ -58,6 +61,7 @@ public class OperateService {
             entities.forEach(operateInfoEntity -> {
                 OperateInfoDto dto = new OperateInfoDto();
                 BeanUtils.copyProperties(operateInfoEntity, dto);
+                dto.setOperatorName(userInfoDao.getOne(operateInfoEntity.getOperatorId()).getUserName());
                 dtos.add(dto);
             });
             return dtos;

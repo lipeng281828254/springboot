@@ -88,6 +88,8 @@ public class JobSerivce {
             entitys.forEach(jobEntity -> {
                 JobDto jobDto = new JobDto();
                 BeanUtils.copyProperties(jobEntity, jobDto);
+                jobDto.setCreateName(userInfoService.getById(jobEntity.getCreateBy()).getUserName());
+                jobDto.setHandlerName(userInfoService.getById(jobEntity.getHandlerId()).getUserName());
                 jobDtos.add(jobDto);
             });
             return jobDtos;
@@ -193,25 +195,36 @@ public class JobSerivce {
         }
         JobDto jobDto = new JobDto();
         BeanUtils.copyProperties(entity, jobDto);
+        jobDto.setCreateName(userInfoService.getById(entity.getCreateBy()).getUserName());
+        jobDto.setHandlerName(userInfoService.getById(entity.getHandlerId()).getUserName());
         return jobDto;
     }
 
     /**
      * 查询代办列表
      *
-     * @param handlerId
+     * @param
      * @return
      */
-    public List<JobDto> queryByHandleId(Long projectId, String type, Long handlerId) {
-        List<JobEntity> entits = jobDao.findByProjectIdAndTypeAndHandlerId(projectId, type, handlerId);
-        if (entits == null || entits.size() < 1) {
-            return new ArrayList<>();
+    public List<JobDto> queryByHandleId(JobDto jobDto) {
+        JobEntity entity = new JobEntity();
+        BeanUtils.copyProperties(jobDto, entity);
+        Example<JobEntity> example1 = Example.of(entity);
+        List<JobEntity> entities = jobDao.findAll(example1);
+        if (entities == null || entities.size() < 1) {
+            return null;
         }
+//        List<JobEntity> entits = jobDao.findByProjectIdAndTypeAndHandlerId(projectId, type, handlerId);
+//        if (entits == null || entits.size() < 1) {
+//            return new ArrayList<>();
+//        }
         List<JobDto> jobDtos = new ArrayList<>();
-        entits.forEach(jobEntity -> {
-            JobDto jobDto = new JobDto();
-            BeanUtils.copyProperties(jobEntity, jobDto);
-            jobDtos.add(jobDto);
+        entities.forEach(jobEntity -> {
+            JobDto jobDto1 = new JobDto();
+            BeanUtils.copyProperties(jobEntity, jobDto1);
+            jobDto1.setCreateName(userInfoService.getById(jobEntity.getCreateBy()).getUserName());
+            jobDto1.setHandlerName(userInfoService.getById(jobEntity.getHandlerId()).getUserName());
+            jobDtos.add(jobDto1);
         });
         return jobDtos;
     }
@@ -234,21 +247,32 @@ public class JobSerivce {
         entities.forEach(jobEntity -> {
             JobDto jobDto1 = new JobDto();
             BeanUtils.copyProperties(jobEntity, jobDto1);
+            jobDto1.setCreateName(userInfoService.getById(jobEntity.getCreateBy()).getUserName());
+            jobDto1.setHandlerName(userInfoService.getById(jobEntity.getHandlerId()).getUserName());
             jobDtos.add(jobDto1);
         });
         return jobDtos;
     }
 
 
-    public List<JobDto> queryMyCreate(Long projectId, String type, Long createBy) {
-        List<JobEntity> entits = jobDao.findByProjectIdAndTypeAndCreateBy(projectId, type, createBy);
-        if (entits == null || entits.size() < 1) {
-            return new ArrayList<>();
+    public List<JobDto> queryMyCreate(JobDto param) {
+//        List<JobEntity> entits = jobDao.findByProjectIdAndTypeAndCreateBy(projectId, type, createBy);
+//        if (entits == null || entits.size() < 1) {
+//            return new ArrayList<>();
+//        }
+        JobEntity entity = new JobEntity();
+        BeanUtils.copyProperties(param, entity);
+        Example<JobEntity> example1 = Example.of(entity);
+        List<JobEntity> entities = jobDao.findAll(example1);
+        if (entities == null || entities.size() < 1) {
+            return null;
         }
         List<JobDto> jobDtos = new ArrayList<>();
-        entits.forEach(jobEntity -> {
+        entities.forEach(jobEntity -> {
             JobDto jobDto = new JobDto();
             BeanUtils.copyProperties(jobEntity, jobDto);
+            jobDto.setCreateName(userInfoService.getById(jobEntity.getCreateBy()).getUserName());
+            jobDto.setHandlerName(userInfoService.getById(jobEntity.getHandlerId()).getUserName());
             jobDtos.add(jobDto);
         });
         return jobDtos;
@@ -264,6 +288,8 @@ public class JobSerivce {
         entits.forEach(jobEntity -> {
             JobDto jobDto = new JobDto();
             BeanUtils.copyProperties(jobEntity, jobDto);
+            jobDto.setCreateName(userInfoService.getById(jobEntity.getCreateBy()).getUserName());
+            jobDto.setHandlerName(userInfoService.getById(jobEntity.getHandlerId()).getUserName());
             jobDtos.add(jobDto);
         });
         return jobDtos;
@@ -343,6 +369,8 @@ public class JobSerivce {
         entities.forEach(entity -> {
             JobDto jobDto = new JobDto();
             BeanUtils.copyProperties(entity, jobDto);
+            jobDto.setCreateName(userInfoService.getById(entity.getCreateBy()).getUserName());
+            jobDto.setHandlerName(userInfoService.getById(entity.getHandlerId()).getUserName());
             jobDtos.add(jobDto);
         });
         return jobDtos;
@@ -358,6 +386,8 @@ public class JobSerivce {
         entities.forEach(entity -> {
             JobDto jp = new JobDto();
             BeanUtils.copyProperties(entity, jp);
+            jp.setCreateName(userInfoService.getById(entity.getCreateBy()).getUserName());
+            jp.setHandlerName(userInfoService.getById(entity.getHandlerId()).getUserName());
             jobDtos.add(jp);
         });
         return jobDtos;

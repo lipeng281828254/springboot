@@ -5,6 +5,7 @@ import cn.hutool.core.bean.copier.CopyOptions;
 import com.zibing.springboot.entity.CommentEntity;
 import com.zibing.springboot.jpa.CommentDao;
 import com.zibing.springboot.dto.*;
+import com.zibing.springboot.jpa.UserInfoDao;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,8 @@ public class CommentService {
     private ProjectService projectService;
     @Autowired
     private NoticeService noticeService;
+    @Autowired
+    private UserInfoDao userInfoDao;
 
 
     /**
@@ -83,12 +86,12 @@ public class CommentService {
         //自己评论，不发消息通知自己
         if (noticeDto.getCreateBy() != jobDto.getCreateBy()) {
             noticeDto.setHandlerId(jobDto.getCreateBy());
-            noticeDto.setHandlerName(jobDto.getCreateName());
+            noticeDto.setHandlerName(userInfoDao.getOne(jobDto.getCreateBy()).getUserName());
             noticeService.createNotice(noticeDto);
         }
         if (noticeDto.getCreateBy() != jobDto.getHandlerId()) {
             noticeDto.setHandlerId(jobDto.getHandlerId());
-            noticeDto.setHandlerName(jobDto.getHandlerName());
+            noticeDto.setHandlerName(userInfoDao.getOne(jobDto.getCreateBy()).getUserName());
             noticeService.createNotice(noticeDto);
         }
     }

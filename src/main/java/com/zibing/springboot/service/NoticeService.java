@@ -4,6 +4,7 @@ import com.zibing.springboot.dto.NoticeDto;
 import com.zibing.springboot.dto.UserInfoDto;
 import com.zibing.springboot.entity.NoticeEntity;
 import com.zibing.springboot.jpa.NoticeDao;
+import com.zibing.springboot.jpa.UserInfoDao;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,8 @@ public class NoticeService {
 
     @Resource
     private NoticeDao noticeDao;
+    @Resource
+    private UserInfoDao userInfoDao;
 
     //创建
     public NoticeEntity createNotice(NoticeDto noticeDto) {
@@ -44,6 +47,8 @@ public class NoticeService {
         entities.forEach(noticeEntity -> {
             NoticeDto noticeDto = new NoticeDto();
             BeanUtils.copyProperties(noticeEntity, noticeDto);
+            noticeDto.setCreateName(userInfoDao.getOne(noticeEntity.getCreateBy()).getUserName());
+            noticeDto.setHandlerName(userInfoDao.getOne(noticeEntity.getHandlerId()).getUserName());
             result.add(noticeDto);
         });
         return result;
@@ -63,6 +68,8 @@ public class NoticeService {
         }
         NoticeDto dto = new NoticeDto();
         BeanUtils.copyProperties(entity,dto);
+        dto.setCreateName(userInfoDao.getOne(entity.getCreateBy()).getUserName());
+        dto.setHandlerName(userInfoDao.getOne(entity.getHandlerId()).getUserName());
         return dto;
     }
 
