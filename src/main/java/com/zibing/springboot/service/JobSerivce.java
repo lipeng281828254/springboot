@@ -89,7 +89,7 @@ public class JobSerivce {
                 JobDto jobDto = new JobDto();
                 BeanUtils.copyProperties(jobEntity, jobDto);
                 jobDto.setCreateName(userInfoService.getById(jobEntity.getCreateBy()).getUserName());
-                if (!jobEntity.equals("迭代")){
+                if (!jobEntity.equals("迭代")) {
                     jobDto.setHandlerName(userInfoService.getById(jobEntity.getHandlerId()).getUserName());
                 }
                 jobDtos.add(jobDto);
@@ -198,7 +198,7 @@ public class JobSerivce {
         JobDto jobDto = new JobDto();
         BeanUtils.copyProperties(entity, jobDto);
         jobDto.setCreateName(userInfoService.getById(entity.getCreateBy()).getUserName());
-        if (!entity.getType().equals("迭代")){
+        if (!entity.getType().equals("迭代")) {
             jobDto.setHandlerName(userInfoService.getById(entity.getHandlerId()).getUserName());
         }
         return jobDto;
@@ -227,7 +227,7 @@ public class JobSerivce {
             JobDto jobDto1 = new JobDto();
             BeanUtils.copyProperties(jobEntity, jobDto1);
             jobDto1.setCreateName(userInfoService.getById(jobEntity.getCreateBy()).getUserName());
-            if (!jobEntity.getType().equals("迭代")){
+            if (!jobEntity.getType().equals("迭代")) {
                 jobDto1.setHandlerName(userInfoService.getById(jobEntity.getHandlerId()).getUserName());
             }
             jobDtos.add(jobDto1);
@@ -253,7 +253,7 @@ public class JobSerivce {
         entities.forEach(jobEntity -> {
             JobDto jobDto1 = new JobDto();
             BeanUtils.copyProperties(jobEntity, jobDto1);
-            if (!jobDto.getType().equals("迭代")){
+            if (!jobDto.getType().equals("迭代")) {
                 jobDto1.setHandlerName(userInfoService.getById(jobEntity.getHandlerId()).getUserName());
             }
             jobDto1.setCreateName(userInfoService.getById(jobEntity.getCreateBy()).getUserName());
@@ -280,7 +280,7 @@ public class JobSerivce {
             JobDto jobDto = new JobDto();
             BeanUtils.copyProperties(jobEntity, jobDto);
             jobDto.setCreateName(userInfoService.getById(jobEntity.getCreateBy()).getUserName());
-            if (!param.getType().equals("迭代")){
+            if (!param.getType().equals("迭代")) {
                 jobDto.setHandlerName(userInfoService.getById(jobEntity.getHandlerId()).getUserName());
             }
             jobDtos.add(jobDto);
@@ -299,7 +299,7 @@ public class JobSerivce {
             JobDto jobDto = new JobDto();
             BeanUtils.copyProperties(jobEntity, jobDto);
             jobDto.setCreateName(userInfoService.getById(jobEntity.getCreateBy()).getUserName());
-            if (!type.equals("迭代")){
+            if (!type.equals("迭代")) {
                 jobDto.setHandlerName(userInfoService.getById(jobEntity.getHandlerId()).getUserName());
             }
             jobDtos.add(jobDto);
@@ -341,25 +341,40 @@ public class JobSerivce {
         }
         List<IterationStatisticDto> statisticDtos = new ArrayList<>();
         handlers.forEach(handlerId -> {
-            IterationStatisticDto xuqiu = statistic(jobId, "需求", handlerId);
-            if (xuqiu != null) {
-                statisticDtos.add(xuqiu);
-            }
-            IterationStatisticDto task = statistic(jobId, "任务", handlerId);
-            if (task != null) {
-                statisticDtos.add(task);
-            }
-            IterationStatisticDto quexian = statistic(jobId, "缺陷", handlerId);
-            if (quexian != null) {
-                statisticDtos.add(quexian);
-            }
+
+////            IterationStatisticDto xuqiu =
+//            statistic(jobId, "需求", handlerId, statisticDto);
+////            if (xuqiu != null) {
+////                statisticDtos.add(xuqiu);
+////            }
+////            IterationStatisticDto task =
+//            statistic(jobId, "任务", handlerId,statisticDto);
+////            if (task != null) {
+////                statisticDtos.add(task);
+////            }
+////            IterationStatisticDto quexian =
+//            statistic(jobId, "缺陷", handlerId,statisticDto);
+////            if (quexian != null) {
+////                statisticDtos.add(quexian);
+////            }
+//
+            statisticDtos.add(build(jobId,handlerId));
         });
         return statisticDtos;
     }
 
+    private IterationStatisticDto build(Long jobId,Long handlerId){
+        IterationStatisticDto statisticDto = new IterationStatisticDto();
+        List<JobEntity> entities = jobDao.findByIterationIdAndHandlerId(jobId,handlerId);
+        statisticDto.setHandlerName(userInfoService.getById(handlerId).getUserName());
+        statisticDto.setDemandCount(entities.size());
+        statisticDto.setJobDtos(build(entities));
+        return statisticDto;
+    }
+
     //查询按裂隙
-    private IterationStatisticDto statistic(Long jobId, String type, Long handleId) {
-        IterationStatisticDto statisticDto = null;
+    private IterationStatisticDto statistic(Long jobId, String type, Long handleId, IterationStatisticDto statisticDto) {
+//        IterationStatisticDto statisticDto = null;
         List<JobEntity> entities = jobDao.findByIterationIdAndTypeAndHandlerId(jobId, type, handleId);
         if (entities == null || entities.size() < 1) {
             //不处理，不然会返回一列空的，影响页面展示
@@ -367,7 +382,7 @@ public class JobSerivce {
 //            iterationStatisticDto.setJobDtos(null);
             return null;
         } else {
-            statisticDto = new IterationStatisticDto();
+//            statisticDto = new IterationStatisticDto();
             statisticDto.setHandlerName(entities.get(0).getHandlerName());
             statisticDto.setDemandCount(entities.size());
             statisticDto.setJobDtos(build(entities));
@@ -382,7 +397,7 @@ public class JobSerivce {
             JobDto jobDto = new JobDto();
             BeanUtils.copyProperties(entity, jobDto);
             jobDto.setCreateName(userInfoService.getById(entity.getCreateBy()).getUserName());
-            if (!entity.getType().equals("迭代")){
+            if (!entity.getType().equals("迭代")) {
                 jobDto.setHandlerName(userInfoService.getById(entity.getHandlerId()).getUserName());
             }
             jobDtos.add(jobDto);
@@ -401,7 +416,7 @@ public class JobSerivce {
             JobDto jp = new JobDto();
             BeanUtils.copyProperties(entity, jp);
             jp.setCreateName(userInfoService.getById(entity.getCreateBy()).getUserName());
-            if (!entity.getType().equals("迭代")){
+            if (!entity.getType().equals("迭代")) {
                 jp.setHandlerName(userInfoService.getById(entity.getHandlerId()).getUserName());
             }
             jobDtos.add(jp);
