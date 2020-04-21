@@ -89,7 +89,7 @@ public class JobSerivce {
                 JobDto jobDto = new JobDto();
                 BeanUtils.copyProperties(jobEntity, jobDto);
                 jobDto.setCreateName(userInfoService.getById(jobEntity.getCreateBy()).getUserName());
-                if (!type.equals("迭代")){
+                if (!jobEntity.equals("迭代")){
                     jobDto.setHandlerName(userInfoService.getById(jobEntity.getHandlerId()).getUserName());
                 }
                 jobDtos.add(jobDto);
@@ -198,7 +198,7 @@ public class JobSerivce {
         JobDto jobDto = new JobDto();
         BeanUtils.copyProperties(entity, jobDto);
         jobDto.setCreateName(userInfoService.getById(entity.getCreateBy()).getUserName());
-        if (!jobDto.getType().equals("迭代")){
+        if (!entity.getType().equals("迭代")){
             jobDto.setHandlerName(userInfoService.getById(entity.getHandlerId()).getUserName());
         }
         return jobDto;
@@ -227,7 +227,7 @@ public class JobSerivce {
             JobDto jobDto1 = new JobDto();
             BeanUtils.copyProperties(jobEntity, jobDto1);
             jobDto1.setCreateName(userInfoService.getById(jobEntity.getCreateBy()).getUserName());
-            if (!jobDto.getType().equals("迭代")){
+            if (!jobEntity.getType().equals("迭代")){
                 jobDto1.setHandlerName(userInfoService.getById(jobEntity.getHandlerId()).getUserName());
             }
             jobDtos.add(jobDto1);
