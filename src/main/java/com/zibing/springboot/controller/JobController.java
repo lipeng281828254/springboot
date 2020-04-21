@@ -85,6 +85,7 @@ public class JobController {
         return jobSerivce.queryByHandleId(jobDto);
     }
 
+    //我创建的
     @GetMapping("queryMycreate.json")
     public List<JobDto> queryMycreate(JobDto jobDto,HttpServletRequest request){
         HttpSession session = request.getSession();
