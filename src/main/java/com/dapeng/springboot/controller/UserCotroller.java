@@ -1,6 +1,6 @@
 package com.dapeng.springboot.controller;
 
-import com.dapeng.springboot.demoOne.UserEntity;
+import com.dapeng.springboot.entity.UserEntity;
 import com.dapeng.springboot.jpa.UserJPA;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
